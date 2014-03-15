@@ -163,6 +163,16 @@ body{
 }
 
 
+/*Pages*/
+.img-container{
+  text-align: center;
+  border-bottom: 1px solid #eee;
+}
+
+.img-container img{
+  margin: 0 auto;
+}
+
 /* Footer */
 .container.footer{
   text-align: center;
