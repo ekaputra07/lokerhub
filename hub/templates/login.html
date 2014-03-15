@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block title %}Login{% endblock %}
+
+{% block content %}
+{% load url from future %}
+<div class="wrapper" id="about">
+<div class="container heading">
+  <h2>LokerHub Login</h2>
+  <p class="lead">Silahkan login atau mendaftar dengan pilihan akun di bawah ini.</p>
+  <hr>
+  <div id="interfacecontainerdiv" class="interfacecontainerdiv">
+        <a href="{{ fb_auth_url }}" class="btn btn-lg btn-info" title="Login melalui Facebook"><span class="glyphicon glyphicon-lock"></span> FACEBOOK</a>
+        <a href="{{ goo_auth_url }}" class="btn btn-lg btn-danger" title="Login melalui Google"><span class="glyphicon glyphicon-lock"></span> GOOGLE</a>
+        <a href="{{ lnkd_auth_url }}" class="btn btn-lg btn-primary" title="Login melalui LinkedIn"><span class="glyphicon glyphicon-lock"></span> LINKEDIN</a>
+  </div>
+</div>
+</div>
+{% endblock %}

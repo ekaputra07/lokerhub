@@ -1,0 +1,33 @@
+{% extends 'dashboard.html' %}
+
+{% block headscripts %}{% endblock %}
+{% block title %}Perusahaan{% endblock %}
+
+{% block dashboard_content %}
+{% load url from future %}
+<h2>
+Daftar Perusahaan
+<a href="{% url 'company_new'%}" class="pull-right btn btn-sm btn-info"><span class="glyphicon glyphicon-plus"></span> Tambah Perusahaan</a>
+</h2>
+<hr>
+<table class="table table-striped">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Nama Perusahaan</th>
+          <th>Email</th>
+          <th>Website</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for company in companies %}
+        <tr>
+          <td>{{ forloop.counter }}</td>
+          <td><a href="{{ company.get_edit_url }}" title="Edit"><strong>{{ company.name }}</strong></a></td>
+          <td>{{ company.email }}</td>
+          <td>{{ company.website|default:"- -" }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+{% endblock %}

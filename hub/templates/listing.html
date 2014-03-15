@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% load url from future %}
+
+<div class="wrapper">
+
+<div class="container heading">
+      <h2 class="cover-heading">{% block section_title %}{ Lowongan kerja IT Indonesia }{% endblock %}</h2>
+      <p class="lead">
+      {% block section_description %}
+      Selamat datang di LokerHub! Kami adalah situs penyedia informasi karir di bidang Teknologi Informasi. Berusaha memberi kesan baru dan segar buat situs lowongan kerja di Indonesia.
+      {% endblock %}
+      </p>
+</div>
+
+<div class="container listing">
+  <div class="well well-sm">
+  <div class="row">
+    <div class="col-sm-8 list">
+        {% block jobs %}
+        <ul class="list-group">
+
+        {% for job in premium_jobs %}
+        <li class="list-group-item list-group-item featured">
+          <span class="pull-right glyphicon glyphicon-star" title="Featured"></span>
+          <p class="title"><a href="{{ job.get_absolute_url }}" title="{{ job.title }}">{{ job.title }}</a></p>
+          <p class="company"><i>di</i> {{ job.company }}, {% if job.location %}{{ job.location }}{% else %}{{ job.company.state }}{% endif %}</p>
+          <p class="date">{{ job.started|date:"d M Y" }}<span class="label label-warning pull-right">{{ job.get_job_type_display|upper }}</span></p>
+        </li>
+        {% endfor %}
+
+        {% for job in free_jobs %}
+        <li class="list-group-item list-group-item">
+          <p class="title"><a href="{{ job.get_absolute_url }}" title="{{ job.title }}">{{ job.title }}</a></p>
+          <p class="company"><i>di</i> {{ job.company }}, {% if job.location %}{{ job.location }}{% else %}{{ job.company.state }}{% endif %}</p>
+          <p class="date">{{ job.started|date:"d M Y" }}<span class="label label-default pull-right">{{ job.get_job_type_display|upper }}</span></p>
+        </li>
+        {% endfor %}
+
+        <li class="list-group-item title" id="indeed" data-category="{% if category %}{{ category.pk }}{% else %}0{% endif %}">
+          <span id=indeed_at><a href="http://www.indeed.com/">jobs</a> by <a
+          href="http://www.indeed.com/" title="Job Search"><img
+          src="http://www.indeed.com/p/jobsearch.gif" style="border: 0;
+          vertical-align: middle;" alt="Indeed job search"></a></span>
+        </li>
+
+        <li class="list-group-item loadmore">
+        <button type="button" class="btn btn-sm btn-block">Berikutnya</button>
+        </li>
+        </ul>
+        {% endblock %}
+
+    </div>
+    
+    <div class="col-sm-4 sidebar">
+    {% include 'partials/categories.html' %}
+    </div>
+
+  </div>
+  </div>
+</div>
+</div>
+{% endblock %}

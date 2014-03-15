@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block title %}{% endblock %}
+{% block description %}{% endblock %}
+
+{% block content %}
+<div class="wrapper">
+
+<div class="container heading">
+    <h2 class="cover-heading">{% block page_title %}{% endblock %}</h2>
+    <p class="lead">{% block page_intro %}{% endblock %}</p>
+    <hr>
+
+    {% block page_content %}
+    {% endblock %}
+</div>
+</div>
+{% endblock %}

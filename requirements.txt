@@ -1,0 +1,6 @@
+django
+pillow
+pytz
+celery
+django-celery
+tweepy

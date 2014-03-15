@@ -1,0 +1,14 @@
+Halo {{ job.user.first_name }} {{ job.user.last_name }},
+
+Kini iklan lowongan anda "{{ job.title }}" sudah berstatus PREMIUM, berikut detailnya:
+
+Mulai tayang : {{ job.started|date:"d/m/Y" }}
+Expired      : {{ job.ended|date:"d/m/Y" }}
+Link         : {{ domain }}{{ job.get_absolute_url }}
+
+
+Terima kasih telah menggunakan layanan kami.
+
+
+Terima Kasih,
+LokerHub Team

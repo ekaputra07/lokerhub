@@ -1,0 +1,119 @@
+{% extends 'dashboard.html' %}
+
+{% block headscripts %}{% endblock %}
+{% block title %}
+    {% if job %} {# This edit Mode #}
+    Edit `{{ job.title }}`
+    {% else %}
+    Tambah Lowongan
+{% endif %}
+{% endblock %}
+
+{% block dashboard_content %}
+{% load url from future %}
+{% load humanize %}
+<h2>
+{% if job %}
+  Edit `{{ job.title }}`
+  <a href="{{ job.get_delete_url }}" class="pull-right btn btn-sm btn-default"><span class="glyphicon glyphicon-remove"></span> Hapus</a>
+{% else %}
+  Tambah Lowongan
+{% endif %}
+
+<a href="{% url 'dashboard' %}" class="btn btn-sm btn-default"><span class="glyphicon glyphicon-chevron-left"></span> Kembali</a>
+{% if job %}
+  <a href="{{ job.get_absolute_url }}" target="_blank" class="btn btn-sm btn-default">
+    <span class="glyphicon glyphicon-share-alt"></span> Lihat
+  </a>
+
+  {% if job.status == 'ACTIVE' %}
+  <a href="{{ job.get_toggle_url }}" class="btn btn-sm btn-info">
+    <span class="glyphicon glyphicon-off"></span> Non-aktifkan
+  </a>
+  {% endif %}
+
+  {% if job.status == 'INACTIVE' %}
+  <a href="{{ job.get_toggle_url }}" class="btn btn-sm btn-success">
+    <span class="glyphicon glyphicon-off"></span> Aktifkan
+  </a>
+  {% endif %}
+
+{% endif %}
+</h2>
+<hr>
+<form role="form" action="" method="post">
+  {% load hub_tags %}
+  {% csrf_token %}
+  <div class="row">
+    <div class="col-sm-6">
+      <div class="form-group">
+        <label for="id_{{ form.title.name }}">{{ form.title.label }} *</label>
+        {{ form.title|addclass:"form-control"}}
+        {% if form.title.errors %}<span class="label label-danger">{{ form.title.errors.0 }}</span>{% endif %}
+      </div>
+      <div class="form-group">
+        <label for="id_{{ form.job_type.name }}">{{ form.job_type.label }}</label>
+        {{ form.job_type|addclass:"form-control"}}
+        {% if form.job_type.errors %}<span class="label label-danger">{{ form.job_type.errors.0 }}</span>{% endif %}
+      </div>
+
+      <div class="form-group">
+        <label for="id_{{ form.location.name }}">{{ form.location.label }}</label>
+        {{ form.location|addclass:"form-control"}}
+        {% if form.location.errors %}<span class="label label-danger">{{ form.location.errors.0 }}</span>{% endif %}
+      </div>
+    </div>
+    
+    <div class="col-sm-6">
+
+        {% if job %}
+        <div class="well well-sm">
+          
+          {% if job.is_premium %}
+            <span class="label label-warning"><strong>PREMIUM</strong></span>
+          {% elif job.has_active_order %}
+              <a href="{{ job.get_cancelpremium_url }}" class="btn btn-sm btn-default"><span class="glyphicon glyphicon-remove"></span> Batalkan PREMIUM</a>
+          {% else %}
+              <a href="{{ job.get_gopremium_url }}" class="btn btn-sm btn-warning"><span class="glyphicon glyphicon-star"></span> Aktifkan PREMIUM (Rp. 100.000,- / 30 hari)</a>
+          {% endif %}
+        </div>
+        {% endif %}
+
+        <div class="form-group">
+          <label for="id_{{ form.company.name }}">{{ form.company.label }} *</label>
+          {{ form.company|addclass:"form-control"}}
+          {% if form.company.errors %}<span class="label label-danger">{{ form.company.errors.0 }}</span>{% endif %}
+        </div>
+        <div class="form-group">
+          <label for="id_{{ form.category.name }}">{{ form.category.label }} *</label>
+          {{ form.category|addclass:"form-control"}}
+          {% if form.category.errors %}<span class="label label-danger">{{ form.category.errors.0 }}</span>{% endif %}
+        </div>
+    </div>
+
+  </div>
+
+  <div class="form-group">
+    <label for="id_{{ form.description.name }}">{{ form.description.label }} *</label>
+    {{ form.description|addclass:"form-control"}}
+    {% if form.description.errors %}<span class="label label-danger">{{ form.description.errors.0 }}</span>{% endif %}
+  </div>
+
+  <div class="form-group">
+    <label for="id_{{ form.how_to_apply.name }}">{{ form.how_to_apply.label }}</label>
+    {{ form.how_to_apply|addclass:"form-control"}}
+    {% if form.how_to_apply.errors %}<span class="label label-danger">{{ form.how_to_apply.errors.0 }}</span>{% endif %}
+  </div>
+
+  <button type="submit" class="pull-right btn btn-lg btn-success">Simpan Lowongan</button>
+  <div class="clearfix"></div>
+</form>
+{% endblock %}
+
+{% block footer_scripts %}
+<script src="{{ STATIC_URL }}js/ckeditor/ckeditor.js"></script>
+<script>
+CKEDITOR.replace( 'id_description' );
+CKEDITOR.replace( 'id_how_to_apply' );
+</script>
+{% endblock %}

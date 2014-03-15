@@ -1,0 +1,99 @@
+{% load url from future %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="{% block description %}LokerHub adalah situs penyedia informasi karir di bidang Teknologi Informasi. Berusaha memberi kesan baru dan segar buat situs lowongan kerja di Indonesia.{% endblock %}">
+    <meta name="author" content="LokerHub.com">
+    <link rel="shortcut icon" href="{{ STATIC_URL }}img/favicon.ico">
+
+    <title>{% block title %}Lowongan kerja IT Indonesia{% endblock %} | LokerHub.com</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="{{ STATIC_URL }}css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="{{ STATIC_URL }}css/hub.css" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  {% block headscripts %}{% endblock %}
+  </head>
+  <body>
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId=658766277495133";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+<div class="navbar navbar-default navbar-fixed-top">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-responsive-collapse">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="{% url 'home' %}" title="LokerHub">LokerHub<span>BETA</span></a>
+    </div>
+    <div class="navbar-collapse collapse navbar-responsive-collapse">
+      <ul class="nav navbar-nav">
+          <li><a href="{% url 'page_about' %}">Tentang</a></li>
+          <li><a href="{% url 'page_premium' %}">Free atau Premium?</a></li>
+          <li><a href="{% url 'page_faq' %}">F.A.Q</a></li>
+          <li><a href="{% url 'page_contact' %}">Kontak</a></li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        {% if user.is_authenticated %}
+        {% if user.is_superuser %}
+        <li><a href="{% url 'indeed_cron_links' %}" title="Cron Link" target="_blank"><span class="glyphicon glyphicon-time"></span>&nbsp; CRON</a></li>     
+        {% endif %}
+        <li><a href="{% url 'dashboard' %}" title="Dashboard"><span class="glyphicon glyphicon-tasks"></span>&nbsp; DASHBOARD</a></li>
+        <li><a href="{% url 'logout' %}" title="Logout"><span class="glyphicon glyphicon-log-out"></span>&nbsp; LOGOUT</a></li>
+        {% else %}
+        <li><a href="{% url 'login' %}" title="Login"><span class="glyphicon glyphicon-user"></span>&nbsp; LOGIN</a></li>
+        {% endif %}
+      </ul>
+    </div>
+  </div>
+</div>
+
+{% block alert %}
+  {% if messages %}
+    {% for message in messages %}
+    <div class="alert alert-{{ message.tags }} alert-dismissable">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+        <strong>{{ message }}</strong>
+    </div>
+    {% endfor %}
+  {% endif %}
+{% endblock %}
+
+{% block content %}{% endblock %}
+
+<div class="container footer">
+  <div class="inner">
+    <div class="fb-like" style="margin-bottom: 15px;" data-href="https://www.facebook.com/lokerhub" data-layout="button_count" data-action="like" data-show-faces="false" data-share="true"></div>
+    <p>&copy; 2014 <a href="{% url 'home' %}">LokerHub.com</a>, made with <span class="glyphicon glyphicon-heart"></span> in Bali, Indonesia.</p>
+  </div>
+</div>
+
+<script>var csrf_token = '{{ csrf_token }}';</script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+<script type="text/javascript" src="http://gdc.indeed.com/ads/apiresults.js"></script>
+<!-- AddThis Button BEGIN -->
+<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-50a7342b7f860d5e"></script>
+<!-- AddThis Button END -->
+<script src="{{ STATIC_URL }}js/app.js"></script>
+<script src="{{ STATIC_URL }}js/bootstrap.min.js"></script>
+{% block footer_scripts %}{% endblock %}
+</body>
+</html>

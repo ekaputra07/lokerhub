@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{% block headscripts %}{% endblock %}
+{% block title %}Dashboard{% endblock %}
+
+
+{% block content %}
+{% load url from future %}
+{% load hub_tags %}
+{% unpaid_bills 'bills' %}
+<div class="container dashboard-content">
+<div class="well well-sm">
+
+<ul class="nav nav-tabs">
+  <li class="{% if active_page == 'dashboard' %}active{% endif %}"><a href="{% url 'dashboard' %}">Lowongan</a></li>
+  <li class="{% if active_page == 'companies' %}active{% endif %}"><a href="{% url 'companies' %}">Perusahaan</a></li>
+  <li class="{% if active_page == 'billing' %}active{% endif %}"><a href="{% url 'billing' %}">Tagihan {% if bills > 0 %}<span class="label label-warning">{{ bills }}</span>{% endif %}</a></li>
+  <li class="{% if active_page == 'pay_confirm' %}active{% endif %}"><a href="{% url 'pay_confirm' %}">Konfirmasi Pembayaran</a></li>
+</ul>
+
+{% block dashboard_content %}
+<h2>Lowongan
+<a href="{% url 'job_new'%}" class="pull-right btn btn-sm btn-info"><span class="glyphicon glyphicon-plus"></span> Tambah Lowongan</a>
+</h2>
+<hr>
+<table class="table table-striped">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Lowongan</th>
+          <th>Tipe</th>
+          <th>Tgl. Tayang</th>
+          <th>Tgl. Expired</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for job in jobs %}
+        <tr>
+          <td {% if job.is_premium %}class="warning"{% endif %}>{{ forloop.counter }}</td>
+          <td {% if job.is_premium %}class="warning"{% endif %}>
+            <a href="{{ job.get_edit_url }}" title="Edit"><strong>{{ job.title }}</strong></a><br>
+            di {{ job.company }}<br>
+            <i>{{ job.category }}</i>
+          </td>
+          <td {% if job.is_premium %}class="warning"{% endif %}>{% if job.is_premium %}<span class="label label-warning">PREMIUM</span>{% else %}<span class="label label-default">FREE</span>{% endif %}</td>
+          <td {% if job.is_premium %}class="warning"{% endif %}>{{ job.started|date:"d M Y" }}</td>
+          <td {% if job.is_premium %}class="warning"{% endif %}>{{ job.ended|date:"d M Y" }}</td>
+          <td {% if job.is_premium %}class="warning"{% endif %}>
+            {% if job.status == 'PENDING' %}<span class="label label-danger">{{ job.status }}</span>{% endif %}
+            {% if job.status == 'ACTIVE' %}<span class="label label-success">{{ job.status }}</span>{% endif %}
+            {% if job.status == 'INACTIVE' %}<span class="label label-default">{{ job.status }}</span>{% endif %}
+          </td>
+        </tr>
+        {% endfor %}
+
+      </tbody>
+    </table>
+{% endblock %}
+</div>
+</div>
+
+{% endblock %}

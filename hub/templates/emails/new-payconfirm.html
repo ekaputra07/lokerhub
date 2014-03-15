@@ -1,0 +1,18 @@
+Halo {{ confirmation.user.first_name }} {{ confirmation.user.last_name }},
+
+Kami telah menerima konfirmasi pembayaran anda, berikut data konfirmasi anda:
+
+Lowongan         : {{ confirmation.order.job.title }}
+Bank tujuan      : {{ confirmation.bank_to }}
+Tanggal          : {{ confirmation.date|date:"d/m/Y" }}
+Bank asal        : {{ confirmation.from_bank }}
+Pemilik rekening : {{ confirmation.from_name }}
+No. rekening     : {{ confirmation.from_acc }}
+Jumlah transfer  : {{ confirmation.from_amount }}
+Catatan          : {{ confirmation.from_note }}
+
+Kami akan segera mengaktifkan lowongan PREMIUM anda setelah data diatas terverifikasi.
+
+
+Terima Kasih,
+LokerHub Team

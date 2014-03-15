@@ -1,0 +1,35 @@
+{% extends 'dashboard.html' %}
+
+{% block headscripts %}{% endblock %}
+{% block title %}Tagihan{% endblock %}
+
+{% block dashboard_content %}
+{% load url from future %}
+{% load humanize %}
+<h2>Tagihan Layanan Premium</h2>
+<hr>
+<table class="table table-striped">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Lowongan</th>
+          <th>Jumlah (Rp.)</th>
+          <th>Status</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for order in orders %}
+        <tr>
+          <td>{{ forloop.counter }}</td>
+          <td><a href="{{ order.job.get_edit_url }}" title="Edit Lowongan"><strong>{{ order.job.title }}</strong></a></td>
+          <td>{{ order.amount|intcomma }}</td>
+          <td>{% if order.status == 'UNPAID' %}<span class="label label-danger">{{ order.status }}</span>{% else %}<span class="label label-success">{{ order.status }}</span>{% endif %}</td>
+          <td>
+              <a href="{{ order.job.get_cancelpremium_url }}" class="btn btn-xs btn-default"><span class="glyphicon glyphicon-remove"></span> Batalkan</a>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+{% endblock %}

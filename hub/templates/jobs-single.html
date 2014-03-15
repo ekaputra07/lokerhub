@@ -1,0 +1,129 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ job.title }}{% endblock %}
+{% block decription %}{{ job.decription }}{% endblock %}
+
+{% block content %}
+{% load url from future %}
+{% load hub_tags %}
+
+<div class="wrapper">
+
+<div class="container heading">
+  <h2 class="cover-heading">{% block section_title %}{{ job.category.name }}{% endblock %}</h2>
+  <p class="lead">
+  {% block section_description %}
+  {{ job.category.description }}
+  {% endblock %}
+  </p>
+</div>
+
+<div class="container listing">
+  <div class="well well-sm">
+  <div class="row">
+    <div class="col-sm-8 list">
+        <li class="list-group-item list-group-item detail">
+        {% if not job.subscription == 'PREMIUM' %}<span class="pull-right glyphicon glyphicon-star" title="Featured"></span>{% endif %}
+        <p class="title">
+            <a href="{{ job.get_absolute_url }}" title="{{ job.title }}">{{ job.title }}</a>
+            {% if job.user == user %}
+            <a href="{{ job.get_edit_url }}" class="btn btn-xs btn-info"><span class="glyphicon glyphicon-pencil"></span> Edit</a>
+            {% endif %}
+        </p>
+        <p class="company"><i>di</i> {{ job.company }}, {{ job.location }}</p>
+        <p class="date">{{ job.started|date }}}<span class="label label-{% if job.is_premium %}warning{% else %}default{% endif %} pull-right">{{ job.get_job_type_display|upper }}</span></p>
+        <hr>
+
+        <div class="detail">
+        {{ job.description|safe }}
+        <div class="clearfix"></div>
+        {% if job.how_to_apply %}
+        <span class="label label-warning how_to_apply">How to apply</span>
+        <div class="clearfix"></div>
+        {{ job.how_to_apply|safe }}
+        <div class="clearfix"></div>
+        {% endif %}
+        <hr>
+
+        {% if form %}
+        <h3 id="form">Surat Lamaran</h3>
+        <form name="applicationform" action="" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="form-group">
+            <label for="id_{{ form.name.name }}">{{ form.name.label }} *</label>
+            {{ form.name|addclass:"form-control"}}
+            {% if form.name.errors %}<span class="label label-danger">{{ form.name.errors.0 }}</span>{% endif %}
+            </div>
+
+            <div class="form-group">
+            <label for="id_{{ form.email.name }}">{{ form.email.label }} *</label>
+            {{ form.email|addclass:"form-control"}}
+            {% if form.email.errors %}<span class="label label-danger">{{ form.email.errors.0 }}</span>{% endif %}
+            </div>
+
+            <div class="form-group">
+            <label for="id_{{ form.resume.name }}">{{ form.resume.label }}</label>
+            {{ form.resume|addclass:"form-control"}}
+            </div>
+
+            <div class="form-group">
+            <label for="id_{{ form.coverletter.name }}">{{ form.coverletter.label }} *</label>
+            {{ form.coverletter|addclass:"form-control"}}
+            {% if form.coverletter.errors %}<span class="label label-danger">{{ form.coverletter.errors.0 }}</span>{% endif %}
+            </div>
+
+            <button type="submit" class="pull-right btn btn-success">Kirim Surat Lamaran</button>
+            <a href="{{ job.get_absolute_url }}" class="btn btn-default">Batalkan</a>
+        </form>
+        <hr>
+        {% endif %}
+
+        <div class="addthis_toolbox addthis_default_style ">
+        <a class="addthis_button_facebook_like" fb:like:layout="button_count"></a>
+        <a class="addthis_button_tweet"></a>
+        <a class="addthis_counter addthis_pill_style"></a>
+        </div>
+
+        </div>
+
+        </li>
+    </div>
+    <div class="col-sm-4 sidebar">
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+        <h3 class="panel-title">{{ job.company.name }}</h3>
+        </div>
+
+        <div class="panel-body">
+        <span class="glyphicon glyphicon-envelope"></span>&nbsp; {{ job.company.email|nospam }}<br>
+        {% if job.company.phone %}<span class="glyphicon glyphicon-phone-alt"></span>&nbsp;  {{ job.company.phone }}<br>{% endif %}
+        {% if job.company.website %}<span class="glyphicon glyphicon-globe"></span>&nbsp;  <a href="{{ job.company.website }}" target="_blank">{{ job.company.website }}</a><br>{% endif %}
+        <span class="glyphicon glyphicon-map-marker"></span>&nbsp;  {{ job.company.address }}, {% if job.company.website %}{{ job.company.city }},{% endif %} {{ job.company.state }}<br>
+        <br>{{ job.company.description }}
+
+        <br><br>
+        <a href="?apply=yes#form" class="btn btn-info btn-lg btn-block">
+          <div class="title">Kirim lamaran</div>
+        </a>
+
+        <div class="linkedin-apply">
+        </div>
+
+        </div>
+    </div>
+
+    {% include 'partials/categories.html' %}
+    </div>
+  </div>
+  </div>
+</div>
+</div>
+{% endblock %}
+
+{% block footer_scripts %}
+<script src="{{ STATIC_URL }}js/ckeditor/ckeditor.js"></script>
+<script>
+CKEDITOR.replace( 'id_coverletter' );
+</script>
+{% endblock %}

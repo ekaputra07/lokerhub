@@ -1,0 +1,81 @@
+{% extends 'dashboard.html' %}
+
+{% block headscripts %}{% endblock %}
+{% block title %}
+    {% if company %} {# This edit Mode #}
+    Edit `{{ company.name }}`
+    {% else %}
+    Tambah Perusahaan
+{% endif %}
+{% endblock %}
+
+
+{% block dashboard_content %}
+{% load url from future %}
+<h2>
+{% if company %} {# This edit Mode #}
+Edit `{{ company.name }}`
+<a href="{{ company.get_delete_url }}" class="pull-right btn btn-sm btn-default"><span class="glyphicon glyphicon-remove"></span> Hapus</a>
+{% else %}
+Tambah Perusahaan
+{% endif %}
+
+<a href="{% url 'companies'%}" class="btn btn-sm btn-default"><span class="glyphicon glyphicon-chevron-left"></span> Kembali</a>
+</h2>
+<hr>
+<form role="form" action="" method="post" enctype="multipart/form-data">
+  {% csrf_token %}
+  {% load hub_tags %}
+  <div class="row">
+    <div class="col-sm-6">
+      <div class="form-group">
+        <label for="id_{{ form.name.name }}">{{ form.name.label }} *</label>
+        {{ form.name|addclass:"form-control"}}
+        {% if form.name.errors %}<span class="label label-danger">{{ form.name.errors.0 }}</span>{% endif %}
+      </div>
+      <div class="form-group">
+        <label for="id_{{ form.email.name }}">{{ form.email.label }} *</label>
+        {{ form.email|addclass:"form-control"}}
+        {% if form.email.errors %}<span class="label label-danger">{{ form.email.errors.0 }}</span>{% endif %}
+      </div>
+      <div class="form-group">
+        <label for="id_{{ form.phone.name }}">{{ form.phone.label }}</label>
+        {{ form.phone|addclass:"form-control"}}
+      </div>
+      <div class="form-group">
+        <label for="id_{{ form.website.name }}">{{ form.website.label }}</label>
+        {{ form.website|addclass:"form-control"}}
+      </div>
+    </div>
+
+    <div class="col-sm-6">
+      <div class="form-group">
+        <label for="id_{{ form.address.name }}">{{ form.address.label }} *</label>
+        {{ form.address|addclass:"form-control"}}
+        {% if form.address.errors %}<span class="label label-danger">{{ form.address.errors.0 }}</span>{% endif %}
+      </div>
+      <div class="form-group">
+        <label for="id_{{ form.city.name }}">{{ form.city.label }}</label>
+        {{ form.city|addclass:"form-control"}}
+        {% if form.city.errors %}<span class="label label-danger">{{ form.city.errors.0 }}</span>{% endif %}
+      </div>
+      <div class="form-group">
+        <label for="id_{{ form.state.name }}">{{ form.state.label }} *</label>
+        {{ form.state|addclass:"form-control"}}
+        {% if form.state.errors %}<span class="label label-danger">{{ form.state.errors.0 }}</span>{% endif %}
+      </div>
+    </div>
+
+  </div>
+
+  <div class="form-group">
+    <label for="id_{{ form.description.name }}">{{ form.description.label }} *</label>
+    {{ form.description|addclass:"form-control"}}
+    {% if form.description.errors %}<span class="label label-danger">{{ form.description.errors.0 }}</span>{% endif %}
+  </div>
+  
+
+  <button type="submit" class="pull-right btn btn-lg btn-success">Simpan Perusahaan</button>
+  <div class="clearfix"></div>
+</form>
+{% endblock %}

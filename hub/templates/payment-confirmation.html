@@ -1,0 +1,67 @@
+{% extends 'dashboard.html' %}
+
+{% block headscripts %}{% endblock %}
+{% block title %}Konfirmasi Pembayaran{% endblock %}
+
+
+{% block dashboard_content %}
+{% load url from future %}
+<h2>Konfirmasi Pembayaran</h2>
+<hr>
+<form role="form" action="" method="post">
+  {% csrf_token %}
+  {% load hub_tags %}
+  <div class="row">
+    <div class="col-sm-6">
+      <div class="form-group">
+        <label for="id_{{ form.order.name }}">{{ form.order.label }} *</label>
+        {{ form.order|addclass:"form-control"}}
+        {% if form.order.errors %}<span class="label label-danger">{{ form.order.errors.0 }}</span>{% endif %}
+      </div>
+      <div class="form-group">
+        <label for="id_{{ form.bank_to.name }}">{{ form.bank_to.label }} *</label>
+        {{ form.bank_to|addclass:"form-control"}}
+        {% if form.bank_to.errors %}<span class="label label-danger">{{ form.bank_to.errors.0 }}</span>{% endif %}
+      </div>
+      <div class="form-group">
+        <label for="id_{{ form.date.name }}">{{ form.date.label }} *</label>
+        {{ form.date|addclass:"form-control"}}
+        {% if form.date.errors %}<span class="label label-danger">{{ form.date.errors.0 }}</span>{% endif %}
+      </div>
+    </div>
+
+    <div class="col-sm-6">
+      <div class="form-group">
+        <label for="id_{{ form.from_bank.name }}">{{ form.from_bank.label }} *</label>
+        {{ form.from_bank|addclass:"form-control"}}
+        {% if form.from_bank.errors %}<span class="label label-danger">{{ form.from_bank.errors.0 }}</span>{% endif %}
+      </div>
+      <div class="form-group">
+        <label for="id_{{ form.from_name.name }}">{{ form.from_name.label }} *</label>
+        {{ form.from_name|addclass:"form-control"}}
+        {% if form.from_name.errors %}<span class="label label-danger">{{ form.from_name.errors.0 }}</span>{% endif %}
+      </div>
+      <div class="form-group">
+        <label for="id_{{ form.from_acc.name }}">{{ form.from_acc.label }} *</label>
+        {{ form.from_acc|addclass:"form-control"}}
+        {% if form.from_acc.errors %}<span class="label label-danger">{{ form.from_acc.errors.0 }}</span>{% endif %}
+      </div>
+      <div class="form-group">
+        <label for="id_{{ form.from_amount.name }}">{{ form.from_amount.label }} *</label>
+        {{ form.from_amount|addclass:"form-control"}}
+        {% if form.from_amount.errors %}<span class="label label-danger">{{ form.from_amount.errors.0 }}</span>{% endif %}
+      </div>
+    </div>
+
+  </div>
+
+  <div class="form-group">
+    <label for="id_{{ form.from_note.name }}">{{ form.from_note.label }}</label>
+    {{ form.from_note|addclass:"form-control"}}
+  </div>
+  
+
+  <button type="submit" class="pull-right btn btn-lg btn-success">Kirim Konfirmasi</button>
+  <div class="clearfix"></div>
+</form>
+{% endblock %}
