@@ -22,7 +22,7 @@ from LoginRadius import LoginRadius
 
 from hub.models import SocialLoginProvider, Company, Category, Job, IndeedJob, PremiumOrder
 from hub.forms import CompanyForm, JobForm, JobApplicationForm, PaymentConfirmationForm, ProfileForm
-from hub.utils import convert_gtm_to_utc, send_premium_activation_email, send_free_activation_email
+from hub.utils import convert_gtm_to_utc, send_premium_activation_email, send_free_activation_email, tweet_job
 
 
 def home_view(request):
@@ -513,8 +513,10 @@ def activate_free_view(request, job_id):
         job.started = now()
         job.ended = job.started + datetime.timedelta(+30)
         job.save()
-        
+
+        tweet_job(job)
         send_free_activation_email(job)
+        
         return HttpResponseRedirect(reverse('admin:hub_job_change', args=[job.pk]))
     raise Http404
 

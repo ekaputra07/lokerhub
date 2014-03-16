@@ -30,12 +30,11 @@ def send_payconfirm_email(sender, instance, created, **kwargs):
         task_send_payconfirm_email.delay(instance)
 
 
-def tweet_job(sender, instance, created, **kwargs):
+def tweet_job(job):
     """
     Tweet the new job.
     """
-    if created:
-        task_tweet_job.delay(instance)
+    task_tweet_job.delay(job)
 
 
 def send_premium_activation_email(job):

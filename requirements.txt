@@ -2,5 +2,7 @@ django
 pillow
 pytz
 celery
-django-celery
+south
 tweepy
+django-celery
+django-supervisor

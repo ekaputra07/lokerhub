@@ -49,6 +49,7 @@ class Migration(SchemaMigration):
             (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
             ('user', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['auth.User'])),
             ('status', self.gf('django.db.models.fields.CharField')(default='INACTIVE', max_length=15)),
+            ('approved', self.gf('django.db.models.fields.BooleanField')(default=False)),
             ('slug', self.gf('django.db.models.fields.SlugField')(max_length=50, null=True, blank=True)),
             ('is_premium', self.gf('django.db.models.fields.BooleanField')(default=False)),
             ('company', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['hub.Company'])),
@@ -98,7 +99,7 @@ class Migration(SchemaMigration):
         db.create_table('premium_orders', (
             (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
             ('user', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['auth.User'])),
-            ('job', self.gf('django.db.models.fields.related.OneToOneField')(to=orm['hub.Job'], unique=True, null=True, blank=True)),
+            ('job', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['hub.Job'], null=True, blank=True)),
             ('job_title', self.gf('django.db.models.fields.CharField')(default='', max_length=150)),
             ('status', self.gf('django.db.models.fields.CharField')(default='UNPAID', max_length=15)),
             ('amount', self.gf('django.db.models.fields.DecimalField')(max_digits=14, decimal_places=2)),
@@ -227,6 +228,7 @@ class Migration(SchemaMigration):
         },
         u'hub.job': {
             'Meta': {'ordering': "['-created']", 'object_name': 'Job', 'db_table': "'jobs'"},
+            'approved': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
             'category': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['hub.Category']"}),
             'company': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['hub.Company']"}),
             'created': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime.now', 'auto_now_add': 'True', 'blank': 'True'}),
@@ -276,7 +278,7 @@ class Migration(SchemaMigration):
             'amount': ('django.db.models.fields.DecimalField', [], {'max_digits': '14', 'decimal_places': '2'}),
             'created': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime.now', 'auto_now_add': 'True', 'blank': 'True'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'job': ('django.db.models.fields.related.OneToOneField', [], {'to': u"orm['hub.Job']", 'unique': 'True', 'null': 'True', 'blank': 'True'}),
+            'job': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['hub.Job']", 'null': 'True', 'blank': 'True'}),
             'job_title': ('django.db.models.fields.CharField', [], {'default': "''", 'max_length': '150'}),
             'status': ('django.db.models.fields.CharField', [], {'default': "'UNPAID'", 'max_length': '15'}),
             'unique_amount': ('django.db.models.fields.DecimalField', [], {'max_digits': '14', 'decimal_places': '2'}),

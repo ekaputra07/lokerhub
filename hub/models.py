@@ -174,8 +174,6 @@ class Job(models.Model):
             return True
         return False
 
-models.signals.post_save.connect(tweet_job, sender=Job)
-
 
 class JobApplication(models.Model):
     """

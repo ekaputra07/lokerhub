@@ -22,9 +22,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 SECRET_KEY = 'tht!tn3cs^(wh%i*8q(1nv49b+=ytcxp@sv^@3&00mx50n-3%m'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-TEMPLATE_DEBUG = True
+TEMPLATE_DEBUG = DEBUG
 
 ALLOWED_HOSTS = []
 
@@ -48,6 +48,7 @@ INSTALLED_APPS = (
     'south',
     'djcelery',
     'kombu.transport.django',
+    'djsupervisor',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -127,7 +128,7 @@ LRD_GOOGLE_AUTH_URL = 'https://lokerhub.hub.loginradius.com/requesthandlor.aspx?
 LRD_LINKEDIN_AUTH_URL = 'https://lokerhub.hub.loginradius.com/requesthandlor.aspx?apikey=%s&provider=linkedin&callback=&scope=' % LRD_API_KEY
 
 # Indeed Publisher Key
-SERVER_IP = '1.2.3.4'
+SERVER_IP = '128.199.206.218'
 INDEED_PUBLISHER_ID = '1629136956167852'
 INDEED_API_URL = 'http://api.indeed.com/ads/apisearch?publisher=%s&q=%s&l=&sort=&radius=&st=&jt=&start=%s&limit=25&fromage=&filter=&latlong=0&co=id&chnl=&userip=%s&useragent=LokerHub&v=2&format=json'
 # example usage url : url = INDEED_API_URL % (INDEED_PUBLISHER_ID, 'java developer', SERVER_IP)
@@ -141,7 +142,7 @@ TWITTER_ACCESS_TOKEN = '2384819797-r8iJXjCiWCnyHYtm4iqtG6smUzzm8rkCyJSj0pU'
 TWITTER_TOKEN_SECRET = 'EN8gLVfPR8wAJ8SYdL2rWiqFlVRyqBaNRNrqhJFwG02us'
 
 # Cron Key
-CRONJOB_KEY = 'xxx'
+CRONJOB_KEY = '^*&*!&JGJAGDJAGDAI*(*ADKASUGDA*&A*&ADJHADJGAD'
 
 # Premium fee
 PREMIUM_FEE = 100000
@@ -157,5 +158,5 @@ if DEBUG:
     EMAIL_PORT = 587
     EMAIL_USE_TLS = True
 
-    EMAIL_HOST_USER = 'ekaputra07@gmail.com'
-    EMAIL_HOST_PASSWORD = 'ver@k@1985'
+    EMAIL_HOST_USER = ''
+    EMAIL_HOST_PASSWORD = ''
