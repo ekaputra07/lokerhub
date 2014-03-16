@@ -1,0 +1,53 @@
+DEBUG = True
+
+ADMINS = (
+    ('LokerHub', 'hello@lokerhub.com'),
+)
+
+ALLOWED_HOSTS = ['.lokerhub.com', 'localhost']
+
+DATABASES = {
+    'default': {
+        'ENGINE':'django.db.backends.mysql',
+        'NAME': 'lokerhubdb',
+        'USER': 'root',
+        'PASSWORD': '',
+        'HOST': '/opt/lampp/var/mysql/mysql.sock',
+        'PORT': '3306',
+    }
+}
+
+SITE_DOMAIN = 'http://localhost:8000'
+
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+
+EMAIL_HOST_USER = ''
+EMAIL_HOST_PASSWORD = ''
+
+# Premium fee
+PREMIUM_FEE = 100000
+
+
+LRD_API_KEY = ''
+LRD_API_SECRET = ''
+
+SERVER_IP = ''
+INDEED_PUBLISHER_ID = ''
+
+# Twitter API
+TWITTER_CONSUMER_KEY = ''
+TWITTER_CONSUMER_SECRET = ''
+TWITTER_ACCESS_TOKEN = ''
+TWITTER_TOKEN_SECRET = ''
+
+LINKEDIN_API_KEY = ''
+
+# Cron Key
+CRONJOB_KEY = 'lokerhubcron'
+
+# My Bank
+BANKS = [
+    {'name': 'BCA', 'branch': 'Ubud, Bali', 'an': 'Pande Putu Eka Putra', 'ac': '135.024.2593'} 
+]
