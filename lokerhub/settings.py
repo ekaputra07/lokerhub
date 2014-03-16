@@ -152,6 +152,9 @@ PREMIUM_FEE = 0
 # My Bank
 BANKS = []
 
+# Google analitics
+GOOGLE_ANALYTIC_CODE = ''
+
 try:
     from .local_settings import *
 except ImportError:
