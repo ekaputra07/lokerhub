@@ -11,7 +11,7 @@
 
     <title>{% block title %}{{ title }}{% endblock %} | LokerHub.com</title>
     <meta property="og:title" content="{{ title|removetags:"p a b h1 h2 h3 ul ol li" }}"/>
-    <meta property="og:image" content="{{ SITE_DOMAIN }}{{ STATIC_URL }}img/logo.jpg"/>
+    <meta property="og:image" content="{{ STATIC_URL }}img/logo.jpg"/>
     <meta property="og:site_name" content="LokerHub"/>
     <meta property="og:description" content="{{ description|removetags:"p a b h1 h2 h3 ul ol li"|striptags|truncatewords:20 }}"/>
     <meta property="og:url" content="{{ CURRENT_URL }}" />
@@ -20,7 +20,7 @@
     <meta name="twitter:url" content="{{ CURRENT_URL }}">
     <meta name="twitter:title" content="{{ title|removetags:"p a b h1 h2 h3 ul ol li" }}">
     <meta name="twitter:description" content="{{ description|removetags:"p a b h1 h2 h3 ul ol li"|striptags|truncatewords:20 }}">
-    <meta name="twitter:image" content="{{ SITE_DOMAIN }}{{ STATIC_URL }}img/logo.jpg">
+    <meta name="twitter:image" content="{{ STATIC_URL }}img/logo.jpg">
 
     <!-- Bootstrap core CSS -->
     <link href="{{ STATIC_URL }}css/bootstrap.min.css" rel="stylesheet">
