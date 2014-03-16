@@ -2,7 +2,7 @@ from django.conf.urls import patterns, include, url
 
 urlpatterns = patterns('hub.views',
     url(r'^$', 'home_view', name='home'),
-
+    url(r'^robots.txt$', 'robots_txt', name='robots_txt'),
     url(r'^about/$', 'page_about', name='page_about'),
     url(r'^faq/$', 'page_faq', name='page_faq'),
     url(r'^contact/$', 'page_contact', name='page_contact'),

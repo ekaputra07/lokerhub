@@ -4,3 +4,5 @@
 *.log
 celerybeat-schedule
 lokerhub/local_settings.py
+assets/static/
+assets/media/

@@ -693,3 +693,10 @@ def page_contact(request):
         'description': 'Apabila anda ada kendala dengan penggunaan sitem kami, ada pertanyaan, saran, kritik kami akan dengan senang hati mendengarnya dari anda.',
     }
     return render_to_response('pages/contact.html', context, context_instance=RequestContext(request))
+
+
+def robots_txt(request):
+    """
+    Robots.txt
+    """
+    return render_to_response('robots.txt', content_type='text/plain')

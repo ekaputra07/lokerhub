@@ -26,11 +26,12 @@ DEBUG = False
 
 TEMPLATE_DEBUG = DEBUG
 
-ALLOWED_HOSTS = ['.lokerhub.com', 'localhost']
+ALLOWED_HOSTS = []
 
 ADMINS = (
-    ('LokerHub', 'hello@lokerhub.com'),
+    # ('LokerHub', 'hello@lokerhub.com'),
 )
+
 MANAGERS = ADMINS
 
 
@@ -74,21 +75,14 @@ WSGI_APPLICATION = 'lokerhub.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.6/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-#     }
-# }
-
 DATABASES = {
     'default': {
         'ENGINE':'django.db.backends.mysql',
-        'NAME': 'lokerhubdb',
-        'USER': 'lokerhubdbuser',
-        'PASSWORD': 'kvPzq2TeAqtR73Z',
-        'HOST': '127.0.0.1',
-        'PORT': '3306',
+        'NAME': '',
+        'USER': '',
+        'PASSWORD': '',
+        'HOST': '',
+        'PORT': '',
     }
 }
 
@@ -126,47 +120,44 @@ CELERYBEAT_SCHEDULE = {
 }
 
 # Site Domain
-SITE_DOMAIN = 'http://lokerhub.com' #'http://localhost:8000'
+SITE_DOMAIN = 'http://localhost:8000'
 
 # Login URL
 LOGIN_URL = '/login/'
 
 # Login Radius settings
-LRD_API_KEY = 'fec3a884-cdd4-49ed-a9a3-68e314b6277f'
-LRD_API_SECRET = '3ad274a8-2155-46a3-a293-6a68ca14ce8d'
-LRD_FACEBOOK_AUTH_URL = 'https://lokerhub.hub.loginradius.com/requesthandlor.aspx?apikey=%s&provider=facebook&callback=&scope=' % LRD_API_KEY
-LRD_GOOGLE_AUTH_URL = 'https://lokerhub.hub.loginradius.com/requesthandlor.aspx?apikey=%s&provider=google&callback=&scope=' % LRD_API_KEY
-LRD_LINKEDIN_AUTH_URL = 'https://lokerhub.hub.loginradius.com/requesthandlor.aspx?apikey=%s&provider=linkedin&callback=&scope=' % LRD_API_KEY
+LRD_API_KEY = ''
+LRD_API_SECRET = ''
 
 # Indeed Publisher Key
-SERVER_IP = '128.199.206.218'
-INDEED_PUBLISHER_ID = '1629136956167852'
+SERVER_IP = ''
+INDEED_PUBLISHER_ID = ''
 INDEED_API_URL = 'http://api.indeed.com/ads/apisearch?publisher=%s&q=%s&l=&sort=&radius=&st=&jt=&start=%s&limit=25&fromage=&filter=&latlong=0&co=id&chnl=&userip=%s&useragent=LokerHub&v=2&format=json'
 # example usage url : url = INDEED_API_URL % (INDEED_PUBLISHER_ID, 'java developer', SERVER_IP)
 
-LINKEDIN_API_KEY = '7512c1njmlwnr1'
+LINKEDIN_API_KEY = ''
 
 # Twitter API
-TWITTER_CONSUMER_KEY = 'snT6SA32WQEvuB7eUwKFw'
-TWITTER_CONSUMER_SECRET = 'fkfq9Ufr1dkWWe7nW5CWfQ7uGP4EqSCn2l0rxv0DQtY'
-TWITTER_ACCESS_TOKEN = '2384819797-r8iJXjCiWCnyHYtm4iqtG6smUzzm8rkCyJSj0pU'
-TWITTER_TOKEN_SECRET = 'EN8gLVfPR8wAJ8SYdL2rWiqFlVRyqBaNRNrqhJFwG02us'
+TWITTER_CONSUMER_KEY = ''
+TWITTER_CONSUMER_SECRET = ''
+TWITTER_ACCESS_TOKEN = ''
+TWITTER_TOKEN_SECRET = ''
 
 # Cron Key
-CRONJOB_KEY = 'lokerhubcron'
+CRONJOB_KEY = ''
 
 # Premium fee
-PREMIUM_FEE = 100000
+PREMIUM_FEE = 0
 
 # My Bank
-BANKS = [
-    {'name': 'BCA', 'branch': 'Ubud, Bali', 'an': 'Pande Putu Eka Putra', 'ac': '135.024.2593'} 
-]
+BANKS = []
 
-# Email settings
-# EMAIL_HOST = 'smtp.gmail.com'
-# EMAIL_PORT = 587
-# EMAIL_USE_TLS = True
+try:
+    from .local_settings import *
+except ImportError:
+    pass
 
-# EMAIL_HOST_USER = 'ekaputra07@gmail.com'
-# EMAIL_HOST_PASSWORD = 'ver@k@1985'
+
+LRD_FACEBOOK_AUTH_URL = 'https://lokerhub.hub.loginradius.com/requesthandlor.aspx?apikey=%s&provider=facebook&callback=&scope=' % LRD_API_KEY
+LRD_GOOGLE_AUTH_URL = 'https://lokerhub.hub.loginradius.com/requesthandlor.aspx?apikey=%s&provider=google&callback=&scope=' % LRD_API_KEY
+LRD_LINKEDIN_AUTH_URL = 'https://lokerhub.hub.loginradius.com/requesthandlor.aspx?apikey=%s&provider=linkedin&callback=&scope=' % LRD_API_KEY
