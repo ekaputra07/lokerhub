@@ -105,6 +105,6 @@
 <script src="{{ STATIC_URL }}js/app.js"></script>
 <script src="{{ STATIC_URL }}js/bootstrap.min.js"></script>
 {% block footer_scripts %}{% endblock %}
-{{ GOOGLE_ANALYTIC_CODE }}
+{{ GOOGLE_ANALYTIC_CODE|safe }}
 </body>
 </html>
