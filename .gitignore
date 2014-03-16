@@ -3,3 +3,4 @@
 *.sqlite3
 *.log
 celerybeat-schedule
+lokerhub/local_settings.py

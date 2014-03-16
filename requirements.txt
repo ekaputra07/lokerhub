@@ -4,5 +4,7 @@ pytz
 celery
 south
 tweepy
+mysql-python
+gunicorn
 django-celery
 django-supervisor
