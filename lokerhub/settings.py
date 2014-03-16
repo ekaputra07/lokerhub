@@ -26,7 +26,7 @@ DEBUG = False
 
 TEMPLATE_DEBUG = DEBUG
 
-ALLOWED_HOSTS = ['.lokerhub.com']
+ALLOWED_HOSTS = ['.lokerhub.com', 'localhost']
 
 ADMINS = (
     ('LokerHub', 'hello@lokerhub.com'),
