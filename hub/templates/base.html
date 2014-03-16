@@ -5,11 +5,22 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="{% block description %}LokerHub adalah situs penyedia informasi karir di bidang Teknologi Informasi. Berusaha memberi kesan baru dan segar buat situs lowongan kerja di Indonesia.{% endblock %}">
+    <meta name="description" content="{% block description %}{{ description|removetags:"p a b h1 h2 h3 ul ol li"|striptags|truncatewords:20 }}{% endblock %}">
     <meta name="author" content="LokerHub.com">
-    <link rel="shortcut icon" href="{{ STATIC_URL }}img/favicon.ico">
+    <link rel="shortcut icon" href="{{ STATIC_URL }}img/favicon.png">
 
-    <title>{% block title %}Lowongan kerja IT Indonesia{% endblock %} | LokerHub.com</title>
+    <title>{% block title %}{{ title }}{% endblock %} | LokerHub.com</title>
+    <meta property="og:title" content="{{ title|removetags:"p a b h1 h2 h3 ul ol li" }}"/>
+    <meta property="og:image" content="{{ SITE_DOMAIN }}{{ STATIC_URL }}img/logo.jpg"/>
+    <meta property="og:site_name" content="LokerHub"/>
+    <meta property="og:description" content="{{ description|removetags:"p a b h1 h2 h3 ul ol li"|striptags|truncatewords:20 }}"/>
+    <meta property="og:url" content="{{ CURRENT_URL }}" />
+
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:url" content="{{ CURRENT_URL }}">
+    <meta name="twitter:title" content="{{ title|removetags:"p a b h1 h2 h3 ul ol li" }}">
+    <meta name="twitter:description" content="{{ description|removetags:"p a b h1 h2 h3 ul ol li"|striptags|truncatewords:20 }}">
+    <meta name="twitter:image" content="{{ SITE_DOMAIN }}{{ STATIC_URL }}img/logo.jpg">
 
     <!-- Bootstrap core CSS -->
     <link href="{{ STATIC_URL }}css/bootstrap.min.css" rel="stylesheet">

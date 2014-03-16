@@ -110,6 +110,26 @@ def task_send_premium_activation_email(job):
 
 
 @app.task
+def task_send_free_activation_email(job):
+    """
+    Send user a notification about one of their job is now approved.
+    """
+    message = render_to_string('emails/job-approved.html', {
+                                    'job': job,
+                                    'domain': settings.SITE_DOMAIN,
+                                })
+    try:
+        # Send email to user
+        user_msg = EmailMessage('Lowongan telah aktif `%s` - LokerHub' % job.title,
+                                message, settings.ADMINS[0][1], [job.user.email],
+                                cc=[settings.ADMINS[0][1]])
+        user_msg.send()
+        return '[OK] Sending approval email.'
+    except Exception as e:
+        return e
+
+
+@app.task
 def task_tweet_job(job):
     """
     Tweet new job.

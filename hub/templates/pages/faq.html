@@ -1,0 +1,47 @@
+{% extends 'pages/base.html' %}
+
+{% block page_title %}
+LokerHub F.A.Q
+{% endblock %}
+
+{% block page_intro %}
+Anda yang ingin anda tanyakan tentang LokerHub? silahkan baca terlebih dahulu beberapa pertanyaan dan jawaban di bawah ini.
+{% endblock %}
+
+
+{% block page_content %}
+    <h3 class="cover-heading">Apa perbedaan lowongan Gratis dan Premium?</h3>
+    <p class="lead">Membuat lowongan dengan tipe gratis maka secara visual lowongan anda di listing kami akan tampak seperti lowongan lainnya, dan juga karena kami menampilkan lowongan berdasarkan waktu pembuatan, maka lowongan yang akan tampil diatas adalah lowongan terbaru.</p>
+    <p class="lead">Berbeda dengan lowongan Premium, secara visual lowongan anda lebih mudah terlihat dan posisi lowongan anda akan tetap berada paling atas, ini juga artinya lowongan anda akan selalu terlihat di halaman depan kami.</p>
+    <hr>
+
+    <h3 class="cover-heading">Berapa lama lowongan saya aktif?</h3>
+    <p class="lead">Baik lowongan Gratis dan Premium memiliki masa aktif selama 30 hari sejak pertama kali kami mengaktifkannya. Namun anda juga dapat me-nonaktifkannya kapan saja anda mau. Ketika masa aktif sudah habis, anda dapat mengaktifkannya kembali.</p>
+    <hr>
+
+    <h3 class="cover-heading">Kenapa lowongan saya tidak langsung aktif?</h3>
+    <p class="lead">Kami berusaha menyajikan informasi lowongan yang berkualitas dan juga selalu relevan dengan dunia IT, kami memoderasi semua lowongan sebelum kami tampilkan untuk memastikan bahwa semua lowongan di LokerHub adalah berhubungan dengan dunia IT.</p>
+    <hr>
+
+    <h3 class="cover-heading">Kenapa tidak ada pilihan login dengan Email?</h3>
+    <p class="lead">Kami ingin menghadirkan sistem yang mudah dan cepat dipakai, login melalui akun sosial menjadi pilihan yang tepat. Ini juga artinya kami tidak perlu menyimpan password anda di sistem kami.</p>
+    <hr>
+
+    <h3 class="cover-heading">Apa itu lowongan dari Indeed?</h3>
+    <p class="lead">Karena situs kami masih baru, maka tidak mungkin kami menampilkan halaman lowongan kosong di halaman depan, untuk itu kami menggunakan data lowongan dari <a href="http://id.indeed.com/" target="_blank" rel="nofollow">Indeed.com</a> untuk mengisi daftar lowongan kami untuk sementara.</p>
+    <hr>
+
+    <h3 class="cover-heading">Kenapa LokerHub fokus kepada lowongan IT?</h3>
+    <p class="lead">Karena kami pada dasarnya adalah orang sehari-hari bergerak di bidang Teknologi Informasi, kami merasa perlu membuatnya untuk mempermudah kami, para perusahaan mencari tenaga professional dan juga mempermudah pencari kerja mendapatkan pekerjaan di bidang IT.</p>
+    <hr>
+
+    <h3 class="cover-heading">Saya ingin ngobrol dengan admin, apa bisa?</h3>
+    <p class="lead">Bisa, silahkan follow admin kami <a href="https://twitter.com/ekaputra07" target="_blank">@ekaputra07</a> di Twitter, orangnya ramah dan sangat semangat kalau diajak ngobrol tentang IT juga :)</p>
+    <hr>
+
+    {% if not user.is_authenticated %}
+    <h2 class="cover-heading">Anda Tertarik?</h2>
+    <p class="lead"><a href="{% url 'login' %}" class="btn btn-lg btn-warning">Daftar Sekarang. Gratis!</a></p>
+    {% endif %}
+
+{% endblock %}

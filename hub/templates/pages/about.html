@@ -1,13 +1,5 @@
 {% extends 'pages/base.html' %}
 
-{% block title %}
-Tentang LokerHub
-{% endblock %}
-
-{% block description %}
-LokerHub merupakan situs penyedia informasi karir di bidang Teknologi Informasi. Berusaha memberi kesan baru dan segar buat situs lowongan kerja di Indonesia.
-{% endblock %}
-
 {% block page_title %}
 Tentang LokerHub
 {% endblock %}
@@ -32,7 +24,7 @@ LokerHub merupakan situs penyedia informasi karir di bidang Teknologi Informasi.
 
     <hr>
     <h2 class="cover-heading">Terintegrasi dengan Sosial Media</h2>
-    <p class="lead">Sistem kami terhubung langsung dengan akun Twitter dan Facebook kami @LokerHub, setiap lowongan yang anda aktifkan secara otomatis dibagikan juga di timeline Twitter dan Facebok kami.</p>
+    <p class="lead">Sistem kami terhubung langsung dengan akun Twitter dan Facebook kami <a href="https://twitter.com/LokerHub">@LokerHub</a>, setiap lowongan yang anda aktifkan secara otomatis dibagikan juga di timeline Twitter dan Facebok kami.</p>
 
     <hr>
     {% if not user.is_authenticated %}

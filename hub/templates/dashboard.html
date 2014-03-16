@@ -2,7 +2,7 @@
 
 {% block headscripts %}{% endblock %}
 {% block title %}Dashboard{% endblock %}
-
+{% block description %}LokerHub dashboard{% endblock %}
 
 {% block content %}
 {% load url from future %}
@@ -16,6 +16,7 @@
   <li class="{% if active_page == 'companies' %}active{% endif %}"><a href="{% url 'companies' %}">Perusahaan</a></li>
   <li class="{% if active_page == 'billing' %}active{% endif %}"><a href="{% url 'billing' %}">Tagihan {% if bills > 0 %}<span class="label label-warning">{{ bills }}</span>{% endif %}</a></li>
   <li class="{% if active_page == 'pay_confirm' %}active{% endif %}"><a href="{% url 'pay_confirm' %}">Konfirmasi Pembayaran</a></li>
+  <li class="pull-right {% if active_page == 'profile' %}active{% endif %}"><a href="{% url 'edit_profile' %}"><span class="glyphicon glyphicon-user"></span> Edit Profile</a></li>
 </ul>
 
 {% block dashboard_content %}

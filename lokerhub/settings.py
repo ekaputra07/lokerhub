@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/1.6/ref/settings/
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
+from django.conf import global_settings
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
 
@@ -58,9 +59,10 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
 
-AUTHENTICATION_BACKENDS = (
-    'hub.backends.LoginRadiusBackend',
-    'django.contrib.auth.backends.ModelBackend',
+AUTHENTICATION_BACKENDS = ('hub.backends.LoginRadiusBackend',) + global_settings.AUTHENTICATION_BACKENDS
+
+TEMPLATE_CONTEXT_PROCESSORS = global_settings.TEMPLATE_CONTEXT_PROCESSORS + (
+    'hub.context_processors.LokerHub',
 )
 
 ROOT_URLCONF = 'lokerhub.urls'
@@ -107,7 +109,7 @@ CELERY_RESULT_BACKEND = 'djcelery.backends.database:DatabaseBackend'
 CELERYBEAT_SCHEDULE = {
     'check-expired-job': {
         'task': 'hub.tasks.task_periodic_check_jobtime',
-        'schedule': crontab(minute='*'),
+        'schedule': crontab(hour=0, minute=0),
     },
 }
 

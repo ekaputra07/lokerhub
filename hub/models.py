@@ -110,6 +110,7 @@ class Job(models.Model):
     """
     user = models.ForeignKey(User)
     status = models.CharField(max_length=15, choices=JOB_STATUSES, default='INACTIVE')
+    approved = models.BooleanField(default=False)
     slug = models.SlugField(null=True, blank=True)
 
     is_premium = models.BooleanField('Premium', default=False)

@@ -21,8 +21,8 @@ from django.contrib import messages
 from LoginRadius import LoginRadius
 
 from hub.models import SocialLoginProvider, Company, Category, Job, IndeedJob, PremiumOrder
-from hub.forms import CompanyForm, JobForm, JobApplicationForm, PaymentConfirmationForm
-from hub.utils import convert_gtm_to_utc, send_premium_activation_email
+from hub.forms import CompanyForm, JobForm, JobApplicationForm, PaymentConfirmationForm, ProfileForm
+from hub.utils import convert_gtm_to_utc, send_premium_activation_email, send_free_activation_email
 
 
 def home_view(request):
@@ -30,10 +30,12 @@ def home_view(request):
     Homepage view.
     """
     context = {
+        'title': 'Lowongan kerja IT Indonesia',
+        'description': 'LokerHub adalah situs penyedia informasi karir di bidang Teknologi Informasi. Berusaha memberi kesan baru dan segar buat situs lowongan kerja di Indonesia.',
         'categories': Category.objects.all(),
-        'premium_jobs': Job.objects.filter(status='ACTIVE', is_premium=True,
+        'premium_jobs': Job.objects.filter(status='ACTIVE', approved=True, is_premium=True,
                                    ended__gte=now).order_by('-started'),
-        'free_jobs': Job.objects.filter(status='ACTIVE', is_premium=False,
+        'free_jobs': Job.objects.filter(status='ACTIVE', approved=True, is_premium=False,
                                    ended__gte=now).order_by('-started'),
     }
     return render_to_response('listing.html', context,
@@ -138,6 +140,32 @@ def dashboard_view(request):
     return render_to_response('dashboard.html', context,
                               context_instance=RequestContext(request))
 
+# ----------------------------------- Profile ----------------------------------#
+
+@login_required
+def profile_view(request):
+    """
+    Edit user profile.
+    """
+    user = request.user
+    context = {
+        'active_page': 'profile',
+    }
+
+    if request.method == 'GET':
+        form = ProfileForm(user, instance=user)
+        context.update({'form': form})
+    else:
+        form = ProfileForm(user, request.POST, instance=user)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Profil anda telah disimpan.', extra_tags='success')
+            return HttpResponseRedirect(reverse('edit_profile'))
+
+        context.update({'form': form})
+    return render_to_response('edit-profile.html', context,
+                              context_instance=RequestContext(request))
+
 # ------------------------------------Company ----------------------------------#
 
 @login_required
@@ -227,12 +255,14 @@ def jobs_view(request, category_slug):
     """
     category = get_object_or_404(Category, slug=category_slug)
     context = {
+        'title': 'Kategori %s' % category.name,
+        'description': category.description,
         'active_page': 'jobs',
         'categories': Category.objects.all(),
         'category': category,
-        'premium_jobs': Job.objects.filter(category=category, status='ACTIVE', is_premium=True,
+        'premium_jobs': Job.objects.filter(category=category, status='ACTIVE', approved=True, is_premium=True,
                                    ended__gte=now).order_by('-started'),
-        'free_jobs': Job.objects.filter(category=category, status='ACTIVE', is_premium=False,
+        'free_jobs': Job.objects.filter(category=category, status='ACTIVE', approved=True, is_premium=False,
                                    ended__gte=now).order_by('-started'),
     }
     return render_to_response('listing-category.html', context,
@@ -257,9 +287,10 @@ def job_new_view(request):
             job.user = user
             job.started = now()
             job.ended = job.started + datetime.timedelta(+30)
-            job.status = 'ACTIVE'
+            job.status = 'PENDING'
+            job.approved = False
             job.save()
-            messages.success(request, 'Lowongan baru telah disimpan dan langsung aktif.', extra_tags='success')
+            messages.success(request, 'Lowongan baru telah disimpan dan sedang dimoderasi admin.', extra_tags='success')
             return HttpResponseRedirect(reverse('job_edit',args=(job.pk,)))
 
     context.update({'form': form})
@@ -315,9 +346,11 @@ def job_detail_view(request, job_slug):
     if request.user.is_authenticated():
         job = get_object_or_404(Job, slug=job_slug)
     else:
-        job = get_object_or_404(Job, slug=job_slug, status='ACTIVE', ended__gte=now)
+        job = get_object_or_404(Job, slug=job_slug, status='ACTIVE', approved=True, ended__gte=now)
 
     context = {
+        'title': 'Lowongan %s' % job.title,
+        'description': job.description,
         'job': job,
         'linkedin_api_key': settings.LINKEDIN_API_KEY,
         'status': request.GET.get('apply'),
@@ -467,6 +500,26 @@ def payment_valid_view(request, order_id):
 
 
 @login_required
+def activate_free_view(request, job_id):
+    """
+    Activate Free for Job and send email.
+    """
+    user = request.user
+    job = get_object_or_404(Job, pk=job_id)
+    # This is can only be done by superuser
+    if user.is_superuser:
+        job.status = 'ACTIVE'
+        job.approved = True
+        job.started = now()
+        job.ended = job.started + datetime.timedelta(+30)
+        job.save()
+        
+        send_free_activation_email(job)
+        return HttpResponseRedirect(reverse('admin:hub_job_change', args=[job.pk]))
+    raise Http404
+
+
+@login_required
 def activate_premium_view(request, job_id):
     """
     Activate premium for Job and send email.
@@ -476,6 +529,7 @@ def activate_premium_view(request, job_id):
     # This is can only be done by superuser
     if user.is_superuser:
         job.is_premium = True
+        job.approved = True
         job.status = 'ACTIVE'
         job.started = now()
         job.ended = job.started + datetime.timedelta(+30)
@@ -610,25 +664,30 @@ def page_about(request):
     """
     About page.
     """
-    return render_to_response('pages/about.html', context_instance=RequestContext(request))
-
-
-def page_premium(request):
-    """
-    Premium page.
-    """
-    return render_to_response('pages/free-premium.html', context_instance=RequestContext(request))
+    context={
+        'title': 'Tentang LokerHub',
+        'description': 'LokerHub merupakan situs penyedia informasi karir di bidang Teknologi Informasi. Berusaha memberi kesan baru dan segar buat situs lowongan kerja di Indonesia.',
+    }
+    return render_to_response('pages/about.html', context, context_instance=RequestContext(request))
 
 
 def page_faq(request):
     """
     Faq page.
     """
-    return render_to_response('pages/faq.html', context_instance=RequestContext(request))
+    context={
+        'title': 'LokerHub F.A.Q',
+        'description': 'Daftar pertanyaan dan jawaban yang paling sering di tanyakan oleh user kami.',
+    }
+    return render_to_response('pages/faq.html', context, context_instance=RequestContext(request))
 
 
 def page_contact(request):
     """
     Contact page.
     """
-    return render_to_response('pages/contact.html', context_instance=RequestContext(request))
+    context={
+        'title': 'Hubungi Kami',
+        'description': 'Apabila anda ada kendala dengan penggunaan sitem kami, ada pertanyaan, saran, kritik kami akan dengan senang hati mendengarnya dari anda.',
+    }
+    return render_to_response('pages/contact.html', context, context_instance=RequestContext(request))
