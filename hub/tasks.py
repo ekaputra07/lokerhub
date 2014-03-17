@@ -18,7 +18,7 @@ def task_send_moderation_email(job):
     """
     try:
         mail_admins('New Job waiting for moderation - LokerHub',
-                    settings.SITE_DOMAIN+reverse('admin:hub_job_change', args=(job.pk,)), fail_silently=False)
+                    settings.SITE_DOMAIN+reverse('admin:hub_job_change', args=(job.pk,)), fail_silently=True)
         return '[OK] Sending moderation email.'
     except Exception as e:
         return e
