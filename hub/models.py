@@ -175,7 +175,7 @@ class Job(models.Model):
             return True
         return False
 
-models.signals.post_save.connect(send_moderation_email, sender=Job)
+# models.signals.post_save.connect(send_moderation_email, sender=Job)
 
 
 class JobApplication(models.Model):
