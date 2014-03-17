@@ -44,7 +44,7 @@ def tweet_job(job):
     """
     Tweet the new job.
     """
-    if not setting.DEBUG:
+    if not settings.DEBUG:
         task_tweet_job.delay(job)
 
 
