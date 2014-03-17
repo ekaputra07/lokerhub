@@ -12,6 +12,19 @@ from lokerhub.celery import app
 
 
 @app.task
+def task_send_moderation_email(job):
+    """
+    Send email to Admin when new job added.
+    """
+    try:
+        mail_admins('New Job waiting for moderation - LokerHub',
+                    settings.SITE_DOMAIN+reverse('admin:hub_job_change', args=(job.pk,)), fail_silently=False)
+        return '[OK] Sending moderation email.'
+    except Exception as e:
+        return e
+
+
+@app.task
 def task_send_apply_email(job_application):
     """
     Send job application email task.

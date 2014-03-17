@@ -9,7 +9,8 @@ from django.conf import settings
 from django.contrib.humanize.templatetags import humanize
 from django.utils.timezone import now
 
-from hub.utils import send_apply_email, send_order_email, send_payconfirm_email, tweet_job
+from hub.utils import (send_apply_email, send_order_email, send_payconfirm_email,
+                       tweet_job, send_moderation_email)
 
 
 class SocialLoginProvider(models.Model):
@@ -173,6 +174,8 @@ class Job(models.Model):
         if len(orders):
             return True
         return False
+
+models.signals.post_save.connect(send_moderation_email, sender=Job)
 
 
 class JobApplication(models.Model):

@@ -1,9 +1,19 @@
 import datetime
 import pytz
 
+from django.conf import settings
+
 from hub.tasks import (task_send_apply_email, task_send_order_email, 
                        task_send_payconfirm_email, task_send_premium_activation_email,
-                       task_send_free_activation_email, task_tweet_job)
+                       task_send_free_activation_email, task_tweet_job, task_send_moderation_email)
+
+
+def send_moderation_email(sender, instance, created, **kwargs):
+    """
+    Send moderation warning to admin.
+    """
+    if created:
+        task_send_moderation_email.delay(instance)
 
 
 def send_apply_email(sender, instance, created, **kwargs):
@@ -34,7 +44,8 @@ def tweet_job(job):
     """
     Tweet the new job.
     """
-    task_tweet_job.delay(job)
+    if not setting.DEBUG:
+        task_tweet_job.delay(job)
 
 
 def send_premium_activation_email(job):
