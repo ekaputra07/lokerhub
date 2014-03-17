@@ -83,7 +83,7 @@ def logincallback_view(request):
 
             u_firstname = profile.get('FirstName', '')
             u_lastname = profile.get('LastName', '')
-            if profile.get('ProfileName'):
+            if profile.get('ProfileName') and profile.get('ProfileName'):
                 u_username = profile.get('ProfileName',
                                          'user%s' % random.randint(1000, 2000))
             else:
