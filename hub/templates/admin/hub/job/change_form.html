@@ -3,9 +3,7 @@
 
 {% block object-tools-items %}
 {% load url from future %}
-{% if object_id %}
 <li><a href="{% url 'activate_free' object_id %}" class="historylink">APPROVE JOB</a></li>
 <li><a href="{% url 'activate_premium' object_id %}" class="historylink">ACTIVATE PREMIUM</a></li>
-{% endif %}
 {{ block.super }}
 {% endblock %}
