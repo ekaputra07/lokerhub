@@ -28,7 +28,7 @@
             {% endif %}
         </p>
         <p class="company"><i>di</i> {{ job.company }}, {{ job.location }}</p>
-        <p class="date">{{ job.started|date }}}<span class="label label-{% if job.is_premium %}warning{% else %}default{% endif %} pull-right">{{ job.get_job_type_display|upper }}</span></p>
+        <p class="date">{{ job.started|date }}<span class="label label-{% if job.is_premium %}warning{% else %}default{% endif %} pull-right">{{ job.get_job_type_display|upper }}</span></p>
         <hr>
 
         <div class="detail">
