@@ -7,7 +7,7 @@ jQuery(document).ready(function($){
         $('.loadmore .btn').text('Memuat...');
         $.post('/indeed/'+category+'/ajax/?page='+indeed_page, {csrfmiddlewaretoken: window.csrf_token}, function(resp){
             $('.loadmore').before(resp.html);
-            if(resp.next_page == indeed_page){
+            if(!resp.next_page){
                 $('.loadmore').hide();
             }else{
                 indeed_page = resp.next_page;

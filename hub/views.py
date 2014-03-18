@@ -554,7 +554,8 @@ def indeed_cron_links(request):
     links = []
     categories = Category.objects.all()
     for cat in categories:
-        links.append(settings.SITE_DOMAIN + cat.get_cron_url()+'?key='+settings.CRONJOB_KEY)
+        url = settings.SITE_DOMAIN + cat.get_cron_url()+'?key='+settings.CRONJOB_KEY
+        links.append('%s - <a href="%s" target="_blank">%s</a>' % (cat.name, url, url))
     return HttpResponse(u'<br>'.join(links))
 
 
@@ -655,8 +656,8 @@ def indeed_jobs(request, category_id):
         context = {
             'html': u''.join(html),
             'page': jobs.number,
-            'next_page': jobs.next_page_number(),
         }
+        if jobs.has_next(): context.update({'next_page': jobs.next_page_number()})
 
         return HttpResponse(json.dumps(context), content_type='application/json')
     raise Http404
