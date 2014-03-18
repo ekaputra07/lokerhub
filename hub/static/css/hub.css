@@ -133,6 +133,9 @@ body{
   width: 100%;
 }
 
+.sidebar .panel-body .company-logo{
+  padding: 0 0 15px 0;
+}
 /* Dashboard */
 .container.dashboard-menu{
   text-align: center;

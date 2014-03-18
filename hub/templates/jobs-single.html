@@ -3,6 +3,7 @@
 {% block content %}
 {% load url from future %}
 {% load hub_tags %}
+{% load thumbnail %}
 
 <div class="wrapper">
 
@@ -93,6 +94,13 @@
         </div>
 
         <div class="panel-body">
+        {% if job.company.logo %}
+        {% thumbnail job.company.logo 248x124 crop as thumb %}
+        <div class="company-logo">
+        <img src="{{ thumb.url }}" width="{{ thumb.width }}" height="{{ thumb.height }}" alt="Logo" class="img-responsive">
+        </div>
+        {% endif %}
+
         <span class="glyphicon glyphicon-envelope"></span>&nbsp; {{ job.company.email|nospam }}<br>
         {% if job.company.phone %}<span class="glyphicon glyphicon-phone-alt"></span>&nbsp;  {{ job.company.phone }}<br>{% endif %}
         {% if job.company.website %}<span class="glyphicon glyphicon-globe"></span>&nbsp;  <a href="{{ job.company.website }}" target="_blank">{{ job.company.website }}</a><br>{% endif %}

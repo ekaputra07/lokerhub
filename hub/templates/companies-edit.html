@@ -64,6 +64,13 @@ Tambah Perusahaan
         {{ form.state|addclass:"form-control"}}
         {% if form.state.errors %}<span class="label label-danger">{{ form.state.errors.0 }}</span>{% endif %}
       </div>
+
+      <div class="form-group">
+        <label for="id_{{ form.logo.name }}">{{ form.logo.label }} *</label>
+        {{ form.logo|addclass:"form-control"}}
+        {% if form.logo.errors %}<span class="label label-danger">{{ form.logo.errors.0 }}</span>{% endif %}
+        <i style="color:#999">(Untuk tampilan terbaik usahakan skala dimensi logo 2:1)</i>
+      </div>
     </div>
 
   </div>

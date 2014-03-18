@@ -50,6 +50,7 @@ INSTALLED_APPS = (
     'djcelery',
     'kombu.transport.django',
     'djsupervisor',
+    'easy_thumbnails',
 )
 
 MIDDLEWARE_CLASSES = (
