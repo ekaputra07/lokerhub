@@ -354,10 +354,14 @@ def job_detail_view(request, job_slug):
         'linkedin_api_key': settings.LINKEDIN_API_KEY,
         'status': request.GET.get('apply'),
     }
+
     form = None
 
     if request.method == 'GET':
         context.update({'categories': Category.objects.all()})
+
+    if job.company.logo:
+        context.update({'page_img': settings.SITE_DOMAIN + job.company.logo.url})
 
         if request.GET.get('apply') == 'yes':
             form = JobApplicationForm()
