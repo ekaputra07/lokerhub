@@ -29,14 +29,37 @@ def home_view(request):
     """
     Homepage view.
     """
+    page = request.GET.get('page')
+
+    # -------------- Indeed Pagination ----------------------------------------#
+    indeed_list = IndeedJob.objects.all()
+    indeed_paginator = Paginator(indeed_list, 10)
+    try:
+        indeed_jobs = indeed_paginator.page(page)
+    except PageNotAnInteger:
+        indeed_jobs = indeed_paginator.page(1)
+    except EmptyPage:
+        indeed_jobs = indeed_paginator.page(indeed_paginator.num_pages)
+
+    # -------------- Free jobs Pagination ----------------------------------------#
+    free_job_list = Job.objects.filter(status='ACTIVE', approved=True, is_premium=False,
+                                       ended__gte=now).order_by('-started')
+    free_job_paginator = Paginator(free_job_list, 10)
+    try:
+        free_jobs = free_job_paginator.page(page)
+    except PageNotAnInteger:
+        free_jobs = free_job_paginator.page(1)
+    except EmptyPage:
+        free_jobs = []
+
     context = {
         'title': 'Lowongan kerja IT Indonesia',
         'description': 'LokerHub adalah situs penyedia informasi karir di bidang Teknologi Informasi. Berusaha memberi kesan baru dan segar buat situs lowongan kerja di Indonesia.',
         'categories': Category.objects.all(),
         'premium_jobs': Job.objects.filter(status='ACTIVE', approved=True, is_premium=True,
                                    ended__gte=now).order_by('-started'),
-        'free_jobs': Job.objects.filter(status='ACTIVE', approved=True, is_premium=False,
-                                   ended__gte=now).order_by('-started'),
+        'free_jobs': free_jobs,
+        'indeed_jobs': indeed_jobs,
     }
     return render_to_response('listing.html', context,
                               context_instance=RequestContext(request))
@@ -253,6 +276,30 @@ def jobs_view(request, category_slug):
     List all jobs in category.
     """
     category = get_object_or_404(Category, slug=category_slug)
+
+    page = request.GET.get('page')
+
+    # -------------- Indeed Pagination ----------------------------------------#
+    indeed_list = IndeedJob.objects.filter(category=category)
+    indeed_paginator = Paginator(indeed_list, 10)
+    try:
+        indeed_jobs = indeed_paginator.page(page)
+    except PageNotAnInteger:
+        indeed_jobs = indeed_paginator.page(1)
+    except EmptyPage:
+        indeed_jobs = indeed_paginator.page(indeed_paginator.num_pages)
+
+    # -------------- Free jobs Pagination ----------------------------------------#
+    free_job_list = Job.objects.filter(category=category, status='ACTIVE', approved=True, is_premium=False,
+                                       ended__gte=now).order_by('-started')
+    free_job_paginator = Paginator(free_job_list, 10)
+    try:
+        free_jobs = free_job_paginator.page(page)
+    except PageNotAnInteger:
+        free_jobs = free_job_paginator.page(1)
+    except EmptyPage:
+        free_jobs = []
+
     context = {
         'title': 'Kategori %s' % category.name,
         'description': category.description,
@@ -261,8 +308,8 @@ def jobs_view(request, category_slug):
         'category': category,
         'premium_jobs': Job.objects.filter(category=category, status='ACTIVE', approved=True, is_premium=True,
                                    ended__gte=now).order_by('-started'),
-        'free_jobs': Job.objects.filter(category=category, status='ACTIVE', approved=True, is_premium=False,
-                                   ended__gte=now).order_by('-started'),
+        'free_jobs': free_jobs,
+        'indeed_jobs': indeed_jobs,
     }
     return render_to_response('listing-category.html', context,
                               context_instance=RequestContext(request))

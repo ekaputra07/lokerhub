@@ -38,15 +38,31 @@
         </li>
         {% endfor %}
 
-        <li class="list-group-item title" id="indeed" data-category="{% if category %}{{ category.pk }}{% else %}0{% endif %}">
+        <li class="list-group-item title">
           <span id=indeed_at><a href="http://www.indeed.com/">jobs</a> by <a
           href="http://www.indeed.com/" title="Job Search"><img
           src="http://www.indeed.com/p/jobsearch.gif" style="border: 0;
           vertical-align: middle;" alt="Indeed job search"></a></span>
         </li>
 
-        <li class="list-group-item loadmore">
-        <button type="button" class="btn btn-sm btn-block">Berikutnya</button>
+        {% for indeed_job in indeed_jobs %}
+        <li class="list-group-item indeed">
+        <p class="title"><a href="{{ indeed_job.url }}" title="{{ indeed_job.title }}" onmousedown="{{ indeed_job.onmousedown }}" target="_blank">{{ indeed_job.title }}</a></p>
+        <p class="company"><i>di</i> {{ indeed_job.company }}, {{ indeed_job.location }}</p>
+        <p class="date">{{ indeed_job.created|date:"d M Y" }}</p>
+        </li>
+        {% endfor %}
+
+        <li class="list-group-item">
+          {% if indeed_jobs.has_previous %}
+          <a href="?page={{ indeed_jobs.previous_page_number }}" class="btn btn-default pull-left">&laquo; Sebelumnya</a>
+          {% endif %}
+
+          {% if indeed_jobs.has_next %}
+          <a href="?page={{ indeed_jobs.next_page_number }}" class="btn btn-default pull-right">Selanjutnya &raquo;</a>
+          {% endif %}
+
+          <div class="clearfix"></div>
         </li>
         </ul>
         {% endblock %}
