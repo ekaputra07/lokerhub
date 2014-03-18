@@ -43,7 +43,7 @@ class Company(models.Model):
     state = models.CharField('Provinsi', max_length=50)
     website = models.URLField('Website', blank=True, null=True, default='')
     description = models.TextField('Keterangan perusahaan', default='')
-    logo = models.ImageField(upload_to='logos', blank=True, null=True)
+    logo = models.ImageField('Logo (JPG/PNG)', upload_to='logos', blank=True, null=True)
 
     class Meta:
         db_table = 'companies'
