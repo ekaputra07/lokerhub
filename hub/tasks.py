@@ -33,8 +33,7 @@ def task_send_apply_email(job_application):
         msg = EmailMessage('Job application for `%s` by %s via LokerHub' % (job_application.job.title, job_application.name),
                            job_application.coverletter,
                            job_application.email,
-                           [job_application.company.email, job_application.job.user.email])
-
+                           [job_application.company.email], [job_application.job.user.email])
         msg.content_subtype = "html"  # Main content is now text/html
         if job_application.resume:
             msg.attach_file(job_application.resume.path)
@@ -115,7 +114,7 @@ def task_send_premium_activation_email(job):
         # Send email to user
         user_msg = EmailMessage('Premium telah aktif `%s` - LokerHub' % job.title,
                                 message, settings.ADMINS[0][1], [job.user.email],
-                                cc=[settings.ADMINS[0][1]])
+                                [settings.ADMINS[0][1]])
         user_msg.send()
         return '[OK] Sending premium active email.'
     except Exception as e:
@@ -135,7 +134,7 @@ def task_send_free_activation_email(job):
         # Send email to user
         user_msg = EmailMessage('Lowongan telah aktif `%s` - LokerHub' % job.title,
                                 message, settings.ADMINS[0][1], [job.user.email],
-                                cc=[settings.ADMINS[0][1]])
+                                [settings.ADMINS[0][1]])
         user_msg.send()
         return '[OK] Sending approval email.'
     except Exception as e:
@@ -178,8 +177,7 @@ def task_periodic_check_jobtime():
     """
     try:
         from hub.models import Job
-        jobs = Job.objects.filter(status='ACTIVE', ended__lte=now()).update(status='INACTIVE',
-                                                                            is_premium=False)
+        jobs = Job.objects.filter(status='ACTIVE', ended__lte=now()).update(status='INACTIVE', ads_type=1)
         return '[OK] Job checks.'
     except Exception as e:
         return e

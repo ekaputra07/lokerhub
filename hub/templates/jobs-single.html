@@ -21,7 +21,7 @@
   <div class="row">
     <div class="col-sm-8 list">
         <li class="list-group-item list-group-item detail">
-        {% if not job.subscription == 'PREMIUM' %}<span class="pull-right glyphicon glyphicon-star" title="Featured"></span>{% endif %}
+        {% if job.ads_type == 0 %}<span class="pull-right glyphicon glyphicon-star" title="Featured"></span>{% endif %}
         <p class="title">
             <a href="{{ job.get_absolute_url }}" title="{{ job.title }}">{{ job.title }}</a>
             {% if job.user == user %}
@@ -29,7 +29,7 @@
             {% endif %}
         </p>
         <p class="company"><i>di</i> {{ job.company }}, {{ job.location }}</p>
-        <p class="date">{{ job.started|date }}<span class="label label-{% if job.is_premium %}warning{% else %}default{% endif %} pull-right">{{ job.get_job_type_display|upper }}</span></p>
+        <p class="date">{{ job.started|date }}<span class="label label-{% if job.ads_type == 0 %}warning{% else %}default{% endif %} pull-right">{{ job.get_job_type_display|upper }}</span></p>
         <hr>
 
         <div class="detail">

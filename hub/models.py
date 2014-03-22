@@ -113,8 +113,9 @@ class Job(models.Model):
     status = models.CharField(max_length=15, choices=JOB_STATUSES, default='INACTIVE')
     approved = models.BooleanField(default=False)
     slug = models.SlugField(null=True, blank=True)
+    # Ads type, 0 Premium, 1 Free
+    ads_type = models.SmallIntegerField(default=1)
 
-    is_premium = models.BooleanField('Premium', default=False)
     company = models.ForeignKey(Company, verbose_name='Perusahaan')
     title = models.CharField('Nama pekerjaan', max_length=150, default='')
     job_type = models.CharField('Status karyawan', max_length=15, choices=JOB_TYPES, default='FULLTIME')

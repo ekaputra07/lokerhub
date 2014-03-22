@@ -50,7 +50,7 @@ class CompanyForm(forms.ModelForm):
 class JobForm(forms.ModelForm):
     class Meta:
         model = Job
-        exclude = ('user', 'status', 'slug', 'created', 'modified', 'started', 'ended', 'is_premium',)
+        exclude = ('user', 'status', 'slug', 'created', 'modified', 'started', 'ended', 'ads_type',)
 
     def __init__(self, user, *args, **kwargs):
         super(JobForm, self).__init__(*args, **kwargs)

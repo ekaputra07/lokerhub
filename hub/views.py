@@ -41,24 +41,21 @@ def home_view(request):
     except EmptyPage:
         indeed_jobs = indeed_paginator.page(indeed_paginator.num_pages)
 
-    # -------------- Free jobs Pagination ----------------------------------------#
-    free_job_list = Job.objects.filter(status='ACTIVE', approved=True, is_premium=False,
-                                       ended__gte=now).order_by('-started')
-    free_job_paginator = Paginator(free_job_list, 10)
+    # -------------- LokerHub jobs Pagination ----------------------------------------#
+    job_list = Job.objects.filter(status='ACTIVE', approved=True, ended__gte=now).order_by('ads_type', '-started')
+    jobs_paginator = Paginator(job_list, 10)
     try:
-        free_jobs = free_job_paginator.page(page)
+        jobs = jobs_paginator.page(page)
     except PageNotAnInteger:
-        free_jobs = free_job_paginator.page(1)
+        jobs = jobs_paginator.page(1)
     except EmptyPage:
-        free_jobs = []
+        jobs = []
 
     context = {
         'title': 'Lowongan kerja IT Indonesia',
         'description': 'LokerHub adalah situs penyedia informasi karir di bidang Teknologi Informasi. Berusaha memberi kesan baru dan segar buat situs lowongan kerja di Indonesia.',
         'categories': Category.objects.all(),
-        'premium_jobs': Job.objects.filter(status='ACTIVE', approved=True, is_premium=True,
-                                   ended__gte=now).order_by('-started'),
-        'free_jobs': free_jobs,
+        'jobs': jobs,
         'indeed_jobs': indeed_jobs,
     }
     return render_to_response('listing.html', context,
@@ -289,16 +286,15 @@ def jobs_view(request, category_slug):
     except EmptyPage:
         indeed_jobs = indeed_paginator.page(indeed_paginator.num_pages)
 
-    # -------------- Free jobs Pagination ----------------------------------------#
-    free_job_list = Job.objects.filter(category=category, status='ACTIVE', approved=True, is_premium=False,
-                                       ended__gte=now).order_by('-started')
-    free_job_paginator = Paginator(free_job_list, 10)
+    # -------------- LokerHub jobs Pagination ----------------------------------------#
+    job_list = Job.objects.filter(status='ACTIVE', approved=True, ended__gte=now).order_by('ads_type', '-started')
+    jobs_paginator = Paginator(job_list, 10)
     try:
-        free_jobs = free_job_paginator.page(page)
+        jobs = jobs_paginator.page(page)
     except PageNotAnInteger:
-        free_jobs = free_job_paginator.page(1)
+        jobs = jobs_paginator.page(1)
     except EmptyPage:
-        free_jobs = []
+        jobs = []
 
     context = {
         'title': 'Kategori %s' % category.name,
@@ -306,9 +302,7 @@ def jobs_view(request, category_slug):
         'active_page': 'jobs',
         'categories': Category.objects.all(),
         'category': category,
-        'premium_jobs': Job.objects.filter(category=category, status='ACTIVE', approved=True, is_premium=True,
-                                   ended__gte=now).order_by('-started'),
-        'free_jobs': free_jobs,
+        'jobs': jobs,
         'indeed_jobs': indeed_jobs,
     }
     return render_to_response('listing-category.html', context,
@@ -402,16 +396,15 @@ def job_detail_view(request, job_slug):
         'status': request.GET.get('apply'),
     }
 
-    form = None
-
     if request.method == 'GET':
         context.update({'categories': Category.objects.all()})
-
-    if job.company.logo:
-        context.update({'page_img': settings.SITE_DOMAIN + job.company.logo.url})
+        
+        if job.company.logo:
+            context.update({'page_img': settings.SITE_DOMAIN + job.company.logo.url})
 
         if request.GET.get('apply') == 'yes':
             form = JobApplicationForm()
+            context.update({'form': form})
     else:
         form = JobApplicationForm(request.POST, request.FILES)
         if form.is_valid():
@@ -422,7 +415,6 @@ def job_detail_view(request, job_slug):
             messages.success(request, 'Selamat! Lowongan anda sudah terkirim.', extra_tags='success')
             return HttpResponseRedirect(job.get_absolute_url())
 
-    context.update({'form': form})
     return render_to_response('jobs-single.html', context,
                               context_instance=RequestContext(request))
 
@@ -580,7 +572,7 @@ def activate_premium_view(request, job_id):
     job = get_object_or_404(Job, pk=job_id)
     # This is can only be done by superuser
     if user.is_superuser:
-        job.is_premium = True
+        job.ads_type = 0
         job.approved = True
         job.status = 'ACTIVE'
         job.started = now()

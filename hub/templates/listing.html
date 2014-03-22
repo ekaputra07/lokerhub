@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+7{% extends 'base.html' %}
 
 {% block content %}
 {% load url from future %}
@@ -21,21 +21,21 @@
         {% block jobs %}
         <ul class="list-group">
 
-        {% for job in premium_jobs %}
-        <li class="list-group-item list-group-item featured">
-          <span class="pull-right glyphicon glyphicon-star" title="Featured"></span>
-          <p class="title"><a href="{{ job.get_absolute_url }}" title="{{ job.title }}">{{ job.title }}</a></p>
-          <p class="company"><i>di</i> {{ job.company }}, {% if job.location %}{{ job.location }}{% else %}{{ job.company.state }}{% endif %}</p>
-          <p class="date">{{ job.started|date:"d M Y" }}<span class="label label-warning pull-right">{{ job.get_job_type_display|upper }}</span></p>
-        </li>
-        {% endfor %}
-
-        {% for job in free_jobs %}
-        <li class="list-group-item list-group-item">
-          <p class="title"><a href="{{ job.get_absolute_url }}" title="{{ job.title }}">{{ job.title }}</a></p>
-          <p class="company"><i>di</i> {{ job.company }}, {% if job.location %}{{ job.location }}{% else %}{{ job.company.state }}{% endif %}</p>
-          <p class="date">{{ job.started|date:"d M Y" }}<span class="label label-default pull-right">{{ job.get_job_type_display|upper }}</span></p>
-        </li>
+        {% for job in jobs %}
+          {% if job.ads_type == 0 %}
+            <li class="list-group-item list-group-item featured">
+              <span class="pull-right glyphicon glyphicon-star" title="Featured"></span>
+              <p class="title"><a href="{{ job.get_absolute_url }}" title="{{ job.title }}">{{ job.title }}</a></p>
+              <p class="company"><i>di</i> {{ job.company }}, {% if job.location %}{{ job.location }}{% else %}{{ job.company.state }}{% endif %}</p>
+              <p class="date">{{ job.started|date:"d M Y" }}<span class="label label-warning pull-right">{{ job.get_job_type_display|upper }}</span></p>
+            </li>
+          {% else %}
+            <li class="list-group-item list-group-item">
+              <p class="title"><a href="{{ job.get_absolute_url }}" title="{{ job.title }}">{{ job.title }}</a></p>
+              <p class="company"><i>di</i> {{ job.company }}, {% if job.location %}{{ job.location }}{% else %}{{ job.company.state }}{% endif %}</p>
+              <p class="date">{{ job.started|date:"d M Y" }}<span class="label label-default pull-right">{{ job.get_job_type_display|upper }}</span></p>
+            </li>
+          {% endif %}
         {% endfor %}
 
         <li class="list-group-item title">
