@@ -36,10 +36,10 @@ admin.site.register(Category, CategoryAdmn)
 
 
 class JobAdmin(admin.ModelAdmin):
-    list_display = ['title', 'user', 'status', 'approved', 'is_premium', 'company', 'started', 'ended']
+    list_display = ['title', 'user', 'status', 'approved', 'ads_type', 'company', 'started', 'ended']
     save_on_top = True
     search_fields = ['title', 'user__username', 'company__name']
-    list_filter = ('status', 'approved', 'is_premium', 'started', 'ended')
+    list_filter = ('status', 'approved', 'ads_type', 'started', 'ended')
 
 admin.site.register(Job, JobAdmin)
 
