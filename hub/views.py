@@ -287,7 +287,7 @@ def jobs_view(request, category_slug):
         indeed_jobs = indeed_paginator.page(indeed_paginator.num_pages)
 
     # -------------- LokerHub jobs Pagination ----------------------------------------#
-    job_list = Job.objects.filter(status='ACTIVE', approved=True, ended__gte=now).order_by('ads_type', '-started')
+    job_list = Job.objects.filter(category=category, status='ACTIVE', approved=True, ended__gte=now).order_by('ads_type', '-started')
     jobs_paginator = Paginator(job_list, 10)
     try:
         jobs = jobs_paginator.page(page)
