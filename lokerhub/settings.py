@@ -110,13 +110,13 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'assets', 'media')
 
 # Celery
-from celery.schedules import crontab
+from celery.schedules import timedelta
 BROKER_URL = 'django://'
 CELERY_RESULT_BACKEND = 'djcelery.backends.database:DatabaseBackend'
 CELERYBEAT_SCHEDULE = {
     'check-expired-job': {
         'task': 'hub.tasks.task_periodic_check_jobtime',
-        'schedule': crontab(hour=0, minute=0),
+        'schedule': timedelta(seconds=3600), #run every hour
     },
 }
 
