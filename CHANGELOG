@@ -1,4 +1,7 @@
-CURRENT VERSION: 0.5
+CURRENT VERSION: 0.5.1
+
+0.5.1
+- Change schedule
 
 0.5
 - Simplify job listing query.
