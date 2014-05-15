@@ -22,7 +22,7 @@ static:
 	./manage.py collectstatic
 
 ssh:
-	ssh -i ~/Dropbox/ssh-key/ekaputra.pem ubuntu@50.112.146.219
+	ssh eka@soulbox.com
 
 push:
 	git push origin master
