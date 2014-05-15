@@ -22,7 +22,7 @@ static:
 	./manage.py collectstatic
 
 ssh:
-	ssh eka@soulbox.com
+	ssh eka@lokerhub.com
 
 push:
 	git push origin master
