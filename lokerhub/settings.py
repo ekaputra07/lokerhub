@@ -110,13 +110,18 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'assets', 'media')
 
 # Celery
-from celery.schedules import timedelta
+from celery.schedules import timedelta, crontab
 BROKER_URL = 'django://'
 CELERY_RESULT_BACKEND = 'djcelery.backends.database:DatabaseBackend'
 CELERYBEAT_SCHEDULE = {
     'check-expired-job': {
         'task': 'hub.tasks.task_periodic_check_jobtime',
         'schedule': timedelta(seconds=3600), #run every hour
+    },
+    'tweet-todays-job': {
+        'task': 'hub.tasks.task_tweet_todays_job',
+        # 'schedule': timedelta(seconds=10),
+        'schedule': crontab(minute=0, hour='8'), #run on 7am in the morning
     },
 }
 
@@ -143,6 +148,8 @@ TWITTER_CONSUMER_KEY = ''
 TWITTER_CONSUMER_SECRET = ''
 TWITTER_ACCESS_TOKEN = ''
 TWITTER_TOKEN_SECRET = ''
+
+BITLY_ACCESS_TOKEN = ''
 
 # Cron Key
 CRONJOB_KEY = ''

@@ -7,6 +7,7 @@ from django.conf import settings
 from django.utils.timezone import now
 
 import tweepy
+import bitly_api
 
 from lokerhub.celery import app
 
@@ -181,3 +182,40 @@ def task_periodic_check_jobtime():
         return '[OK] Job checks.'
     except Exception as e:
         return e
+
+
+@app.task
+def task_tweet_todays_job():
+    """
+    Tweets latest jobs from Indeed.
+    """
+    from hub.models import IndeedJob
+
+    consumer_key = settings.TWITTER_CONSUMER_KEY
+    consumer_secret = settings.TWITTER_CONSUMER_SECRET
+    access_token = settings.TWITTER_ACCESS_TOKEN
+    access_token_secret = settings.TWITTER_TOKEN_SECRET
+
+    auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
+    auth.set_access_token(access_token, access_token_secret)
+
+    api = tweepy.API(auth)
+
+    # Get todays indeed jobs.
+    jobs = IndeedJob.objects.filter(created__day=now().day-1,
+                                    created__month=now().month,
+                                    created__year=now().year)[:3]
+    for job in jobs:
+        try:
+            c = bitly_api.Connection(access_token=settings.BITLY_ACCESS_TOKEN)
+            biturl = c.shorten(job.url)
+        except Exception as e:
+            print e
+        else:
+            try:
+                status = 'Lowongan `%s` di %s %s via @LokerHub' % (job.title, job.company, biturl.get('url', job.url))
+                api.update_status(status)
+            except Exception as e:
+                print e
+            else:
+                print '[OK] Tweet Indeed job:' + status
