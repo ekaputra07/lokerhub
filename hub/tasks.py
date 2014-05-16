@@ -219,3 +219,9 @@ def task_tweet_todays_job():
                 print e
             else:
                 print '[OK] Tweet Indeed job:' + status
+
+    try:
+        utctime = now().strftime("%d/%m/%Y %H:%M:%S")
+        mail_admins('IndeedJob tweet task running now at: UTC %s' % utctime)
+    except Exception as e:
+        return e
