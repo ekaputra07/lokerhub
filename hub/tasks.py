@@ -189,6 +189,7 @@ def task_tweet_todays_job():
     """
     Tweets latest jobs from Indeed.
     """
+    """
     from hub.models import IndeedJob
 
     consumer_key = settings.TWITTER_CONSUMER_KEY
@@ -219,7 +220,7 @@ def task_tweet_todays_job():
                 print e
             else:
                 print '[OK] Tweet Indeed job:' + status
-
+    """
     try:
         utctime = now().strftime("%d/%m/%Y %H:%M:%S")
         mail_admins('IndeedJob tweet task running now at: UTC %s' % utctime)

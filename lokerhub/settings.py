@@ -121,7 +121,7 @@ CELERYBEAT_SCHEDULE = {
     'tweet-todays-job': {
         'task': 'hub.tasks.task_tweet_todays_job',
         # 'schedule': timedelta(seconds=10),
-        'schedule': crontab(minute=0, hour='11'), #run on 7am in the morning
+        'schedule': crontab(minute=0, hour='19'), #run on 7am in the morning
     },
 }
 
