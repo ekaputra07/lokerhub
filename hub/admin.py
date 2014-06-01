@@ -63,7 +63,7 @@ admin.site.register(IndeedJob, IndeedJobAdmin)
 
 
 class PremiumOrderAdmin(admin.ModelAdmin):
-    list_display = ['user', 'job_title', 'status', 'amount']
+    list_display = ['user', 'job_title', 'status', 'amount', 'created']
     save_on_top = True
     search_fields = ['user__username', 'job_title']
     list_filter = ('status',)

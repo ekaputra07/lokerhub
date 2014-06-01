@@ -57,6 +57,8 @@ def task_send_order_email(order):
     user_message = render_to_string('emails/new-order.html', {
                                         'user': order.user,
                                         'domain': settings.SITE_DOMAIN,
+                                        'banks': settings.BANKS,
+                                        'fee': settings.PREMIUM_FEE,
                                         'billing_link': reverse('billing'),
                                         'confirm_link': reverse('pay_confirm'),
                                     })

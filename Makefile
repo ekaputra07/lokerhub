@@ -1,25 +1,25 @@
 all: build
 
 build:
-	lessc -x ui/static/less/soulbox.less > ui/static/css/soulbox.min.css
+	echo 'do nothing'
 
 clean:
 	find . -name \*.pyc | xargs rm
 
 run:
-	./manage.py supervisor
+	python manage.py supervisor
 
 startall:
-	./manage.py supervisor start all
+	python manage.py supervisor start all
 
 stopall:
-	./manage.py supervisor stop all
+	python manage.py supervisor stop all
 
 daemonize:
-	./manage.py supervisor --daemonize
+	python manage.py supervisor --daemonize
 
 static:
-	./manage.py collectstatic
+	python manage.py collectstatic
 
 ssh:
 	ssh eka@lokerhub.com

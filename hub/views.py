@@ -357,7 +357,9 @@ def job_edit_view(request, job_id):
         if form.is_valid():
             form.save(commit=False)
             form.user = user
-            form.save()
+            job = form.save()
+            job.approved = True
+            job.save()
             messages.success(request, 'Lowongan telah disimpan.', extra_tags='success')
             return HttpResponseRedirect(reverse('job_edit',
                                                 args=(job_id,)) + "?s=success")

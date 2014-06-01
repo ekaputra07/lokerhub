@@ -74,7 +74,7 @@
           {% elif job.has_active_order %}
               <a href="{{ job.get_cancelpremium_url }}" class="btn btn-sm btn-default"><span class="glyphicon glyphicon-remove"></span> Batalkan PREMIUM</a>
           {% else %}
-              <a href="{{ job.get_gopremium_url }}" class="btn btn-sm btn-warning"><span class="glyphicon glyphicon-star"></span> Aktifkan PREMIUM (Rp. 100.000,- / 30 hari)</a>
+              <a href="{{ job.get_gopremium_url }}" class="btn btn-sm btn-warning"><span class="glyphicon glyphicon-star"></span> Aktifkan PREMIUM (Rp. {{ PREMIUM_FEE|intcomma }},- / 30 hari)</a>
           {% endif %}
         </div>
         {% endif %}
@@ -105,7 +105,7 @@
     {% if form.how_to_apply.errors %}<span class="label label-danger">{{ form.how_to_apply.errors.0 }}</span>{% endif %}
   </div>
 
-  <button type="submit" class="pull-right btn btn-lg btn-success">Simpan Lowongan</button>
+  <button type="submit" class="pull-right btn btn-lg btn-success">{% if job %}Simpan Lowongan{% else %}Pasang Lowongan{% endif %}</button>
   <div class="clearfix"></div>
 </form>
 {% endblock %}

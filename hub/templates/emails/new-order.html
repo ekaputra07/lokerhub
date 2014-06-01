@@ -1,11 +1,15 @@
+{% load humanize %}
 Halo {{ user.first_name }} {{ user.last_name }},
 
 Terima kasih telah melakukkan upgrade lowongan ke PREMIUM,
-silahkan melakukkan pembayaran Rp. 100.000,- ke rekening berikut:
+silahkan melakukkan pembayaran Rp. {{ fee|intcomma }},- ke salah satu rekening berikut:
 
-Atas nama    : Pande Putu Eka Putra
-No. rekening : 135.024.2593
-Bank         : BCA (Cabang Ubud, Bali)
+{% for bank in banks %}
+Bank         : {{ bank.name }} (Cabang {{ bank.branch }})
+Atas nama    : {{ bank.an }}
+No. rekening : {{ bank.ac }}
+-------------------------------------------------------------
+{% endfor %}
 
 Setelah pembayaran dilakukkan harap konfirmasi ke kami melalui form berikut ini:
 {{ domain }}{{ confirm_link }}
