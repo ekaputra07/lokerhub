@@ -608,14 +608,12 @@ def fetch_indeed(url, cat):
     try:
         f = urllib2.urlopen(url)
     except Exception as e:
-        print e
         return HttpResponse('Error opening source URL.')
     else:
         raw_json = f.read()
         try:
             fine_json = json.loads(raw_json)
         except Exception as e:
-            print e
             return HttpResponse('Error parsing JSON.')
 
     if fine_json:

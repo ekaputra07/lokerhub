@@ -1,0 +1,9 @@
+#!/bin/bash
+
+set -e
+
+PROJECTDIR=/home/eka/python/LokerHub/lokerhub
+
+cd $PROJECTDIR
+source ../bin/activate
+python manage.py supervisor --daemonize

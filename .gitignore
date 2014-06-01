@@ -2,6 +2,7 @@
 *.db
 *.sqlite3
 *.log
+startup.sh
 celerybeat-schedule
 lokerhub/local_settings.py
 assets/static/

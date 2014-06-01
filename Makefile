@@ -29,3 +29,6 @@ push:
 
 pull:
 	git pull origin master
+
+process:
+	ps aux | grep python
