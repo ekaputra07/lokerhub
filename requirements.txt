@@ -2,10 +2,11 @@ django
 pillow
 pytz
 celery
-south
 tweepy
 mysql-python
 gunicorn
 django-celery
 django-supervisor
 bitly_api
+easy_thumbnails
+requests

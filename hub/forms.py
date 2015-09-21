@@ -11,7 +11,7 @@ from hub.models import Company, Job, JobApplication, PremiumOrder, PaymentConfir
 class ProfileForm(forms.ModelForm):
     class Meta:
         model = User
-        fields = ['first_name', 'last_name', 'email']
+        fields = ['first_name', 'email']
 
     def __init__(self, user, *args, **kwargs):
         super(ProfileForm, self).__init__(*args, **kwargs)
@@ -22,12 +22,6 @@ class ProfileForm(forms.ModelForm):
         if not first_name:
             raise forms.ValidationError('Nama depan harus diisi.')
         return first_name
-
-    def clean_last_name(self):
-        last_name = self.cleaned_data.get('last_name')
-        if not last_name:
-            raise forms.ValidationError('Nama be;akang harus diisi.')
-        return last_name
 
     def clean_email(self):
         email = self.cleaned_data.get('email')

@@ -3,6 +3,8 @@ import datetime
 from urllib import quote
 import urllib2
 import json
+import requests
+from requests.auth import HTTPBasicAuth
 
 from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render_to_response, get_object_or_404
@@ -18,7 +20,7 @@ from django.conf import settings
 from django.utils.timezone import now
 from django.contrib import messages
 
-from LoginRadius import LoginRadius
+from pyoneall import OneAll
 
 from hub.models import SocialLoginProvider, Company, Category, Job, IndeedJob, PremiumOrder
 from hub.forms import CompanyForm, JobForm, JobApplicationForm, PaymentConfirmationForm, ProfileForm
@@ -68,9 +70,7 @@ def login_view(request):
     """
     if not request.user.is_authenticated():
         context = {
-            'fb_auth_url': settings.LRD_FACEBOOK_AUTH_URL,
-            'goo_auth_url': settings.LRD_GOOGLE_AUTH_URL,
-            'lnkd_auth_url': settings.LRD_LINKEDIN_AUTH_URL,
+            'oneall_login_callback': reverse('login_callback'),
         }
         return render_to_response('login.html', context,
                                    context_instance=RequestContext(request))
@@ -83,55 +83,66 @@ def logincallback_view(request):
     LoginRadius social login callback.
     """
     if request.method == 'POST':
-        lrd_token = request.POST.get('token', '')
-        loginradius = LoginRadius(settings.LRD_API_SECRET, lrd_token)
-        profile = loginradius.loginradius_get_data()
+        oa_token = request.POST.get('connection_token', '')
+        url = 'https://%s.api.oneall.com/connections/%s.json' % (settings.ONEALL_SUBDOMAIN, oa_token)
+        resp = requests.get(url, auth=HTTPBasicAuth(settings.ONEALL_API_KEY, settings.ONEALL_API_SECRET))
+        json_resp = resp.json()
 
-        u_provider = profile.get('Provider')
-        u_ID = profile.get('ID', None)
+        data = json_resp['response']['result']['data']
+        key = data['plugin']['key']
+        status = data['plugin']['data']['status']
 
-        user = authenticate(provider=u_provider, provider_user_id=u_ID)
+        if key and (key == 'social_login' or key == 'single_sign_on') and status == 'success':
+            provider = data['user']['identity']['source']['name']
+            user_token = data['user']['user_token']
+            displayName = data['user']['identity']['displayName']
 
-        if user is not None and user.is_active:
-            login(request, user)
-            return HttpResponseRedirect(reverse('dashboard'))
-        else:
-            u_emails = profile.get('Email', None)
-            u_email = None
-            if len(u_emails) > 0:
-                u_email = u_emails[0].get('Value', None)
-
-            u_firstname = profile.get('FirstName', '')
-            u_lastname = profile.get('LastName', '')
-            u_username = 'user%s' % random.randint(1000, 90000)
-
+            email = None
             try:
-                user = User.objects.get(email=u_email)
-            except User.DoesNotExist:
-                # User with this email doesn't exist.
-                # Create new user and login
-                user = User(
-                    username = u_username,
-                    email = u_email,
-                    first_name = u_firstname,
-                    last_name = u_lastname
-                )
-                user.is_active = True
-                user.save()
+                email = data['user']['identity']['emails'][0]['value']
+            except:
+                pass
 
-                provider_user = SocialLoginProvider(user=user,
-                                                    name=u_provider,
-                                                    provider_user_id=u_ID)
-                provider_user.save()
+            user = authenticate(provider=provider, provider_user_id=user_token)
 
-                # Authenticate once again and login.
-                u = authenticate(provider=u_provider, provider_user_id=u_ID)
-                login(request, u)
+            if user is not None and user.is_active:
+                login(request, user)
                 return HttpResponseRedirect(reverse('dashboard'))
             else:
-                messages.error(request, 'Email sudah terdaftar dengan akun lain.', extra_tags='danger')
-                return HttpResponseRedirect(reverse('login'))
-            return HttpResponseRedirect(reverse('login'))
+                username = 'user%s' % random.randint(1000, 90000)
+
+                # generate temp email if no email returned.
+                if not email:
+                    email = '%s+generated@lokerhub.com' % username
+
+                try:
+                    user = User.objects.get(email=email)
+                except User.DoesNotExist:
+                    # User with this email doesn't exist.
+                    # Create new user and login
+                    user = User(
+                        username = username,
+                        email = email,
+                        first_name = displayName
+                    )
+                    user.is_active = True
+                    user.save()
+
+                    provider_user = SocialLoginProvider(user=user,
+                                                        name=provider,
+                                                        provider_user_id=user_token)
+                    provider_user.save()
+
+                    # Authenticate once again and login.
+                    u = authenticate(provider=provider, provider_user_id=user_token)
+                    login(request, u)
+                    return HttpResponseRedirect(reverse('dashboard'))
+                else:
+                    messages.error(request, 'Email sudah terdaftar dengan akun lain.', extra_tags='danger')
+                    return HttpResponseRedirect(reverse('login'))
+
+        messages.error(request, 'Login / Register gagal.', extra_tags='danger')
+        return HttpResponseRedirect(reverse('login'))
 
     raise Http404
 
@@ -155,7 +166,7 @@ def dashboard_view(request):
         'active_page': 'dashboard',
         'jobs': Job.objects.filter(user=user),
     }
-    
+
     return render_to_response('dashboard.html', context,
                               context_instance=RequestContext(request))
 
@@ -400,7 +411,7 @@ def job_detail_view(request, job_slug):
 
     if request.method == 'GET':
         context.update({'categories': Category.objects.all()})
-        
+
         if job.company.logo:
             context.update({'page_img': settings.SITE_DOMAIN + job.company.logo.url})
 
@@ -539,7 +550,7 @@ def payment_valid_view(request, order_id):
         order.status = 'PAID'
         order.save()
         return HttpResponseRedirect(reverse('admin:hub_job_change', args=[order.job.pk]))
-        
+
     raise Http404
 
 
@@ -560,7 +571,7 @@ def activate_free_view(request, job_id):
 
         tweet_job(job)
         send_free_activation_email(job)
-        
+
         return HttpResponseRedirect(reverse('admin:hub_job_change', args=[job.pk]))
     raise Http404
 
@@ -580,7 +591,7 @@ def activate_premium_view(request, job_id):
         job.started = now()
         job.ended = job.started + datetime.timedelta(+30)
         job.save()
-        
+
         send_premium_activation_email(job)
         return HttpResponseRedirect(reverse('admin:hub_job_change', args=[job.pk]))
     raise Http404

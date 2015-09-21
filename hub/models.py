@@ -124,8 +124,8 @@ class Job(models.Model):
     description = models.TextField('Deskripsi pekerjaan', default='')
     how_to_apply = models.TextField('Cara melamar', blank=True, null=True, default='')
 
-    created = models.DateTimeField(auto_now_add=True, default=now)
-    modified = models.DateTimeField(auto_now=True, default=now)
+    created = models.DateTimeField(auto_now_add=True)
+    modified = models.DateTimeField(auto_now=True)
     started = models.DateTimeField(default=now)
     ended = models.DateTimeField(default=now)
 
@@ -190,7 +190,7 @@ class JobApplication(models.Model):
     resume = models.FileField('Upload Resume / CV', upload_to='resumes', blank=True, null=True)
     coverletter = models.TextField('Surat lamaran')
     read_status = models.BooleanField(default=False)
-    created = models.DateTimeField(auto_now_add=True, default=now)
+    created = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         db_table = 'job_applications'
@@ -240,8 +240,8 @@ class PremiumOrder(models.Model):
     status  = models.CharField(max_length=15, choices=ORDER_STATUSES, default='UNPAID')
     amount = models.DecimalField(max_digits=14, decimal_places=2)
     unique_amount = models.DecimalField(max_digits=14, decimal_places=2)
-    created = models.DateTimeField(auto_now_add=True, default=now)
-    updated = models.DateTimeField(auto_now=True, default=now)
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
 
     class Meta:
         db_table = 'premium_orders'
@@ -268,7 +268,7 @@ class PaymentConfirmation(models.Model):
     from_amount = models.CharField('Jumlah transfer', max_length=50, default=settings.PREMIUM_FEE)
     date = models.DateField('Tanggal transfer (Tanggal-Bulan-Tahun)', default=now)
     from_note = models.TextField('Catatan tambahan', blank=True, null=True, default='')
-    created = models.DateTimeField(auto_now_add=True, default=now)
+    created = models.DateTimeField(auto_now_add=True)
     checked = models.BooleanField(default=False)
 
     class Meta:

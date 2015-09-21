@@ -2,12 +2,12 @@
 {% if user.is_authenticated %}
 <a href="{% url 'job_new' %}" class="btn btn-success btn-lg btn-block">
   <div class="title">Pasang Lowongan</div>
-  gratis! dan Premium
+  gratis!
 </a>
 {% else %}
 <a href="{% url 'login' %}" class="btn btn-success btn-lg btn-block">
   <div class="title">Pasang Lowongan</div>
-  gratis! dan Premium
+  gratis!
 </a>
 {% endif %}
 
