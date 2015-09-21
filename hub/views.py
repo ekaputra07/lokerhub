@@ -35,7 +35,7 @@ def home_view(request):
 
     # -------------- Indeed Pagination ----------------------------------------#
     indeed_list = IndeedJob.objects.all()
-    indeed_paginator = Paginator(indeed_list, 10)
+    indeed_paginator = Paginator(indeed_list, 20)
     try:
         indeed_jobs = indeed_paginator.page(page)
     except PageNotAnInteger:
@@ -45,7 +45,7 @@ def home_view(request):
 
     # -------------- LokerHub jobs Pagination ----------------------------------------#
     job_list = Job.objects.filter(status='ACTIVE', approved=True, ended__gte=now).order_by('ads_type', '-started')
-    jobs_paginator = Paginator(job_list, 10)
+    jobs_paginator = Paginator(job_list, 20)
     try:
         jobs = jobs_paginator.page(page)
     except PageNotAnInteger:
@@ -289,7 +289,7 @@ def jobs_view(request, category_slug):
 
     # -------------- Indeed Pagination ----------------------------------------#
     indeed_list = IndeedJob.objects.filter(category=category)
-    indeed_paginator = Paginator(indeed_list, 10)
+    indeed_paginator = Paginator(indeed_list, 20)
     try:
         indeed_jobs = indeed_paginator.page(page)
     except PageNotAnInteger:
@@ -299,7 +299,7 @@ def jobs_view(request, category_slug):
 
     # -------------- LokerHub jobs Pagination ----------------------------------------#
     job_list = Job.objects.filter(category=category, status='ACTIVE', approved=True, ended__gte=now).order_by('ads_type', '-started')
-    jobs_paginator = Paginator(job_list, 10)
+    jobs_paginator = Paginator(job_list, 20)
     try:
         jobs = jobs_paginator.page(page)
     except PageNotAnInteger:
