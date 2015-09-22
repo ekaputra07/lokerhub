@@ -1,0 +1,33 @@
+{% extends 'pages/base.html' %}
+
+{% block title %}Lengkapi Data Akun{% endblock %}
+
+{% block page_title %}
+Lengkapi Data Akun
+{% endblock %}
+
+{% block page_intro %}
+Kami tidak berhasil mendapatkan email dari akun sosial media anda pada saat pendaftaran,<br>untuk itu silahkan masukkan <b>alamat email</b> anda di bawah ini.
+{% endblock %}
+
+{% block page_content %}
+<div class="col-sm-8 col-sm-offset-2" style="text-align: center">
+  <form role="form" class="form-inline" action="" method="post">
+    {% csrf_token %}
+    {% load hub_tags %}
+    {% if form.email.errors %}<div class="alert alert-warning">{{ form.email.errors.0 }}</div><br><br>{% endif %}
+
+    <div class="form-group">
+      {{ form.email|addclass:"form-control input-lg" }}
+    </div>
+    <button type="submit" class="btn btn-lg btn-success">Simpan</button>
+  </form>
+  <br><br>
+  <small>
+    Catatan: Email hanya dipergunakan untuk mengirimkan notifikasi mengenai lowongan anda.
+    <br>Jangan khawatir, kami tidak akan pernah mengirimkan email SPAM.
+  </small>
+</div>
+<div class="clearfix"></div>
+<hr>
+{% endblock %}

@@ -59,6 +59,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'hub.middleware.IncompleteSignupMiddleware',
 )
 
 AUTHENTICATION_BACKENDS = ('hub.backends.LoginRadiusBackend',) + global_settings.AUTHENTICATION_BACKENDS

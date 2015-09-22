@@ -35,6 +35,25 @@ class ProfileForm(forms.ModelForm):
         return email
 
 
+class EmailForm(forms.Form):
+    email = forms.EmailField()
+
+    def __init__(self, user, *args, **kwargs):
+        super(EmailForm, self).__init__(*args, **kwargs)
+        self.user = user
+
+    def clean_email(self):
+        email = self.cleaned_data.get('email')
+        if email:
+            try:
+                u = User.objects.get(email=email)
+                if u != self.user:
+                    raise forms.ValidationError('Email sudah terdaftar di akun lain.')
+            except User.DoesNotExist:
+                pass
+        return email
+
+
 class CompanyForm(forms.ModelForm):
     class Meta:
         model = Company

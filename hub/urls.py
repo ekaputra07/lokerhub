@@ -9,6 +9,7 @@ urlpatterns = patterns('hub.views',
 
     url(r'^login/$', 'login_view', name='login'),
     url(r'^login/callback/$', 'logincallback_view', name='login_callback'),
+    url(r'^finish-signup/$', 'finish_signup_view', name='finish_signup'),
     url(r'^logout/$', 'logout_view', name='logout'),
     url(r'^cron/links/$', 'indeed_cron_links', name='indeed_cron_links'),
     url(r'^cron/indeed/(?P<category_id>\d+)/$', 'indeed_cron_view', name='indeed_cron'),

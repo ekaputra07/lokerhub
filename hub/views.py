@@ -7,7 +7,7 @@ import requests
 from requests.auth import HTTPBasicAuth
 
 from django.views.decorators.csrf import csrf_exempt
-from django.shortcuts import render_to_response, get_object_or_404
+from django.shortcuts import render_to_response, get_object_or_404, render
 from django.template import RequestContext
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
@@ -23,7 +23,7 @@ from django.contrib import messages
 from pyoneall import OneAll
 
 from hub.models import SocialLoginProvider, Company, Category, Job, IndeedJob, PremiumOrder
-from hub.forms import CompanyForm, JobForm, JobApplicationForm, PaymentConfirmationForm, ProfileForm
+from hub.forms import CompanyForm, JobForm, JobApplicationForm, PaymentConfirmationForm, ProfileForm, EmailForm
 from hub.utils import convert_gtm_to_utc, send_premium_activation_email, send_free_activation_email, tweet_job
 
 
@@ -55,7 +55,7 @@ def home_view(request):
 
     context = {
         'title': 'Lowongan kerja IT Indonesia',
-        'description': 'LokerHub adalah situs penyedia informasi karir di bidang Teknologi Informasi. Berusaha memberi kesan baru dan segar buat situs lowongan kerja di Indonesia.',
+        'description': 'LokerHub adalah situs penyedia informasi karir di bidang Teknologi Informasi.',
         'categories': Category.objects.all(),
         'jobs': jobs,
         'indeed_jobs': indeed_jobs,
@@ -145,6 +145,26 @@ def logincallback_view(request):
         return HttpResponseRedirect(reverse('login'))
 
     raise Http404
+
+
+@login_required
+def finish_signup_view(request):
+    """
+    Finish signup page.
+    """
+    user = request.user
+    if request.method == 'GET':
+        form = EmailForm(user)
+    else:
+        form = EmailForm(user, request.POST)
+        if form.is_valid():
+            user.email = form.cleaned_data['email']
+            user.save()
+
+            messages.success(request, 'Email anda telah disimpan.', extra_tags='success')
+            return HttpResponseRedirect(reverse('dashboard'))
+
+    return render(request, 'finish-signup.html', {'form': form})
 
 
 @login_required
