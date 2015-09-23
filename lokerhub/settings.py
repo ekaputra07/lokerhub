@@ -156,6 +156,7 @@ CRONJOB_KEY = ''
 
 # Premium fee
 PREMIUM_FEE = 0
+PREMIUM_FEE_TEXT = None
 
 # My Bank
 BANKS = []
