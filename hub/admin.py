@@ -2,17 +2,17 @@ from django.contrib import admin
 from django.contrib.auth.models import User
 from django.contrib.auth.admin import UserAdmin
 
-from hub.models import (SocialLoginProvider, Company, Category, Job,
+from hub.models import (OneallToken, Company, Category, Job,
                         JobApplication, IndeedJob, PremiumOrder, PaymentConfirmation)
 
 
 
-class SocialLoginProviderAdmin(admin.TabularInline):
-    model = SocialLoginProvider
+class OneallTokenAdmin(admin.TabularInline):
+    model = OneallToken
     can_delete = False
 
 class UserAdmin(UserAdmin):
-    inlines = [SocialLoginProviderAdmin]
+    inlines = [OneallTokenAdmin]
     save_on_top = True
 
 admin.site.unregister(User)

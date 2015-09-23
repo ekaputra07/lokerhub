@@ -62,7 +62,7 @@ MIDDLEWARE_CLASSES = (
     'hub.middleware.IncompleteSignupMiddleware',
 )
 
-AUTHENTICATION_BACKENDS = ('hub.backends.LoginRadiusBackend',) + global_settings.AUTHENTICATION_BACKENDS
+AUTHENTICATION_BACKENDS = ('hub.backends.OneallBackend',) + global_settings.AUTHENTICATION_BACKENDS
 
 TEMPLATE_CONTEXT_PROCESSORS = global_settings.TEMPLATE_CONTEXT_PROCESSORS + (
     'hub.context_processors.LokerHub',

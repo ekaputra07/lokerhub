@@ -1,28 +1,67 @@
 {% extends 'dashboard.html' %}
 
-{% block headscripts %}{% endblock %}
 {% block title %}Edit Profil{% endblock %}
+{% block headscripts %}
+<script type="text/javascript">
+  var oneall_subdomain = 'lokerhub';
 
+  /* The library is loaded asynchronously */
+  var oa = document.createElement('script');
+  oa.type = 'text/javascript'; oa.async = true;
+  oa.src = '//' + oneall_subdomain + '.api.oneall.com/socialize/library.js';
+  var s = document.getElementsByTagName('script')[0];
+  s.parentNode.insertBefore(oa, s);
+</script>
+{% endblock %}
 
 {% block dashboard_content %}
 {% load url from future %}
-<h2>Edit Profil</h2>
-<hr>
-<form role="form" action="" method="post">
-  {% csrf_token %}
-  {% load hub_tags %}
-  <div class="form-group">
-    <label for="id_{{ form.first_name.name }}">Nama *</label>
-    {{ form.first_name|addclass:"form-control"}}
-    {% if form.first_name.errors %}<span class="label label-danger">{{ form.first_name.errors.0 }}</span>{% endif %}
-  </div>
-  <div class="form-group">
-    <label for="id_{{ form.email.name }}">{{ form.email.label }} *</label>
-    {{ form.email|addclass:"form-control"}}
-    {% if form.email.errors %}<span class="label label-danger">{{ form.email.errors.0 }}</span>{% endif %}
-  </div>
+<div class="row">
+  <div class="col-sm-6">
+    <h3>Edit Profil</h3>
+    <hr>
+    <form role="form" action="" method="post">
+      {% csrf_token %}
+      {% load hub_tags %}
+      <div class="form-group">
+        <label for="id_{{ form.first_name.name }}">Nama *</label>
+        {{ form.first_name|addclass:"form-control"}}
+        {% if form.first_name.errors %}<span class="label label-danger">{{ form.first_name.errors.0 }}</span>{% endif %}
+      </div>
+      <div class="form-group">
+        <label for="id_{{ form.email.name }}">{{ form.email.label }} *</label>
+        {{ form.email|addclass:"form-control"}}
+        {% if form.email.errors %}<span class="label label-danger">{{ form.email.errors.0 }}</span>{% endif %}
+      </div>
 
-  <button type="submit" class="pull-right btn btn-lg btn-success">Simpan Profil</button>
-  <div class="clearfix"></div>
-</form>
+      <button type="submit" class="pull-right btn btn-lg btn-success">Simpan Profil</button>
+      <div class="clearfix"></div>
+    </form>
+  </div>
+  <div class="col-sm-6">
+    <h3>Social Login</h3>
+    <hr>
+    <p>Hubungkan dengan akun media sosial dibawah ini untuk mempermudah login:</p>
+    <div id="oa_social_link_container" class="well"></div>
+  </div>
+</div>
+{% endblock %}
+
+{% block footer_scripts %}
+<script type="text/javascript">
+
+  /* Replace #your_callback_uri# with the url to your own callback script */
+  var your_callback_script = '{{SITE_DOMAIN}}{{ ONEALL_LOGIN_CALLBACK_URL }}';
+
+  /* Dynamically add the user_token of the currently logged in user. */
+  /* If the user has no user_token then leave the field blank. */
+  var user_token = '{{ user.oneall.token }}';
+
+  /* Embeds the buttons into the container oa_social_link_container */
+  var _oneall = _oneall || [];
+  _oneall.push(['social_link', 'set_providers', ['facebook', 'twitter', 'google', 'github']]);
+  _oneall.push(['social_link', 'set_callback_uri', your_callback_script]);
+  _oneall.push(['social_link', 'set_user_token', user_token]);
+  _oneall.push(['social_link', 'do_render_ui', 'oa_social_link_container']);
+</script>
 {% endblock %}

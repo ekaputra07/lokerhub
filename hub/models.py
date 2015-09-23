@@ -13,21 +13,22 @@ from hub.utils import (send_apply_email, send_order_email, send_payconfirm_email
                        tweet_job, send_moderation_email)
 
 
-class SocialLoginProvider(models.Model):
+class OneallToken(models.Model):
     """
-    User login provider.
+    OneAll user token.
     """
-    user = models.ForeignKey(User)
-    name = models.CharField(max_length=30)
-    provider_user_id = models.CharField(max_length=200)
+    user = models.OneToOneField(User, related_name='oneall')
+    token = models.CharField(max_length=50)
+    created = models.DateTimeField(auto_now_add=True)
+    modified = models.DateTimeField(auto_now=True)
 
     class Meta:
-        db_table = 'social_login_providers'
-        verbose_name = 'Social Login Provider'
-        verbose_name_plural = 'Social Login Providers'
+        db_table = 'oneall_tokens'
+        verbose_name = 'OneAll Token'
+        verbose_name_plural = 'OneAll Tokens'
 
     def __unicode__(self):
-        return u'%s - %s' % (self.name, self.provider_user_id)
+        return u'%s (%s)' % (self.user.first_name, self.token)
 
 
 class Company(models.Model):

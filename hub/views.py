@@ -20,9 +20,7 @@ from django.conf import settings
 from django.utils.timezone import now
 from django.contrib import messages
 
-from pyoneall import OneAll
-
-from hub.models import SocialLoginProvider, Company, Category, Job, IndeedJob, PremiumOrder
+from hub.models import OneallToken, Company, Category, Job, IndeedJob, PremiumOrder
 from hub.forms import CompanyForm, JobForm, JobApplicationForm, PaymentConfirmationForm, ProfileForm, EmailForm
 from hub.utils import convert_gtm_to_utc, send_premium_activation_email, send_free_activation_email, tweet_job
 
@@ -69,11 +67,7 @@ def login_view(request):
     Login page.
     """
     if not request.user.is_authenticated():
-        context = {
-            'oneall_login_callback': reverse('login_callback'),
-        }
-        return render_to_response('login.html', context,
-                                   context_instance=RequestContext(request))
+        return render(request, 'login.html')
     raise Http404
 
 
@@ -84,6 +78,7 @@ def logincallback_view(request):
     """
     if request.method == 'POST':
         oa_token = request.POST.get('connection_token', '')
+
         url = 'https://%s.api.oneall.com/connections/%s.json' % (settings.ONEALL_SUBDOMAIN, oa_token)
         resp = requests.get(url, auth=HTTPBasicAuth(settings.ONEALL_API_KEY, settings.ONEALL_API_SECRET))
         json_resp = resp.json()
@@ -92,8 +87,8 @@ def logincallback_view(request):
         key = data['plugin']['key']
         status = data['plugin']['data']['status']
 
+        # Handle social login.
         if key and (key == 'social_login' or key == 'single_sign_on') and status == 'success':
-            provider = data['user']['identity']['source']['name']
             user_token = data['user']['user_token']
             displayName = data['user']['identity']['displayName']
 
@@ -103,7 +98,7 @@ def logincallback_view(request):
             except:
                 pass
 
-            user = authenticate(provider=provider, provider_user_id=user_token)
+            user = authenticate(oneall_token=user_token)
 
             if user is not None and user.is_active:
                 login(request, user)
@@ -128,23 +123,45 @@ def logincallback_view(request):
                     user.is_active = True
                     user.save()
 
-                    provider_user = SocialLoginProvider(user=user,
-                                                        name=provider,
-                                                        provider_user_id=user_token)
-                    provider_user.save()
+                    token = OneallToken(user=user, token=user_token)
+                    token.save()
 
                     # Authenticate once again and login.
-                    u = authenticate(provider=provider, provider_user_id=user_token)
+                    u = authenticate(oneall_token=user_token)
                     login(request, u)
                     return HttpResponseRedirect(reverse('dashboard'))
                 else:
                     messages.error(request, 'Email sudah terdaftar dengan akun lain.', extra_tags='danger')
                     return HttpResponseRedirect(reverse('login'))
 
-        messages.error(request, 'Login / Register gagal.', extra_tags='danger')
-        return HttpResponseRedirect(reverse('login'))
+            messages.error(request, 'Login / Register gagal.', extra_tags='danger')
+            return HttpResponseRedirect(reverse('login'))
 
-    raise Http404
+        # Social link
+        if key and (key == 'social_link') and status == 'success':
+            link_action = data['plugin']['data']['action']
+
+            # link account
+            if link_action == 'link_identity':
+                user_token = data['user']['user_token']
+                provider = data['user']['identity']['source']['name']
+                try:
+                    oneall = request.user.oneall
+                    oneall.token = user_token
+                    oneall.save()
+                except:
+                    oneall = OneallToken(user=request.user, token=user_token)
+                    oneall.save()
+
+                messages.success(request, "Akun anda sudah tersambung dengan %s." % provider, extra_tags='success')
+                return HttpResponseRedirect(reverse('edit_profile'))
+
+            # unlink account
+            if link_action == 'unlink_identity':
+                messages.success(request, "Social login berhasil diupdate.", extra_tags='success')
+                return HttpResponseRedirect(reverse('edit_profile'))
+
+    return Http404
 
 
 @login_required
