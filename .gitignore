@@ -4,6 +4,7 @@
 *.log
 startup.sh
 celerybeat-schedule
+celerybeat.pid
 lokerhub/local_settings.py
 assets/static/
 assets/media/
