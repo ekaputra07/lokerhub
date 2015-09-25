@@ -10,7 +10,6 @@
 {% endblock %}
 
 {% block dashboard_content %}
-{% load url from future %}
 {% load humanize %}
 <h2>
 {% if job %}
@@ -63,12 +62,12 @@
         {% if form.location.errors %}<span class="label label-danger">{{ form.location.errors.0 }}</span>{% endif %}
       </div>
     </div>
-    
+
     <div class="col-sm-6">
 
         {% if job %}
         <div class="well well-sm">
-          
+
           {% if job.ads_type == 0 %}
             <span class="label label-warning"><strong>PREMIUM</strong></span>
           {% elif job.has_active_order %}

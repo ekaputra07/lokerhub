@@ -5,7 +5,6 @@
 
 
 {% block dashboard_content %}
-{% load url from future %}
 <h2>Konfirmasi Pembayaran</h2>
 <hr>
 <form role="form" action="" method="post">
@@ -59,7 +58,7 @@
     <label for="id_{{ form.from_note.name }}">{{ form.from_note.label }}</label>
     {{ form.from_note|addclass:"form-control"}}
   </div>
-  
+
 
   <button type="submit" class="pull-right btn btn-lg btn-success">Kirim Konfirmasi</button>
   <div class="clearfix"></div>

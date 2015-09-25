@@ -2,7 +2,7 @@
 Halo {{ user.first_name }},
 
 Terima kasih telah melakukkan upgrade lowongan ke PREMIUM,
-silahkan melakukkan pembayaran Rp. {{ fee|intcomma }},- ke salah satu rekening berikut:
+silahkan melakukkan pembayaran Rp. {{ fee|intcomma }},- ke rekening berikut:
 
 {% for bank in banks %}
 Bank         : {{ bank.name }} (Cabang {{ bank.branch }})

@@ -160,7 +160,7 @@ def task_tweet_job(job):
     api = tweepy.API(auth)
 
     # If the application settings are set for "Read and Write" then
-    # this line should tweet out the message to your account's 
+    # this line should tweet out the message to your account's
     # timeline. The "Read and Write" setting is on https://dev.twitter.com/apps
     try:
         status = 'Lowongan `%s` di %s %s%s via @LokerHub' % (job.title,
@@ -225,6 +225,6 @@ def task_tweet_todays_job():
     """
     try:
         utctime = now().strftime("%d/%m/%Y %H:%M:%S")
-        mail_admins('IndeedJob tweet task running now at: UTC %s' % utctime)
+        mail_admins('IndeedJob tweet task running now at: UTC %s' % utctime, 'hello')
     except Exception as e:
         return e

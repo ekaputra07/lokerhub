@@ -11,7 +11,6 @@
 
 
 {% block dashboard_content %}
-{% load url from future %}
 <h2>
 {% if company %} {# This edit Mode #}
 Edit `{{ company.name }}`
@@ -80,7 +79,7 @@ Tambah Perusahaan
     {{ form.description|addclass:"form-control"}}
     {% if form.description.errors %}<span class="label label-danger">{{ form.description.errors.0 }}</span>{% endif %}
   </div>
-  
+
 
   <button type="submit" class="pull-right btn btn-lg btn-success">Simpan Perusahaan</button>
   <div class="clearfix"></div>

@@ -1,10 +1,10 @@
-Halo {{ job.user.first_name }} {{ job.user.last_name }},
+Halo {{ job.user.first_name }},
 
 Kini iklan lowongan anda "{{ job.title }}" sudah aktif, berikut detailnya:
 
-Mulai tayang : {{ job.started|date:"d/m/Y" }}
-Expired      : {{ job.ended|date:"d/m/Y" }}
-Link         : {{ domain }}{{ job.get_absolute_url }}
+Mulai tayang    : {{ job.started|date:"d/m/Y" }}
+Berhenti tayang : {{ job.ended|date:"d/m/Y" }}
+Link            : {{ domain }}{{ job.get_absolute_url }}
 
 
 Dengan ini kami sampaikan juga bahwa lowongan anda secara otomatis di bagikan
