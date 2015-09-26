@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
+{% load thumbnail %}
 <div class="wrapper">
 
 <div class="container heading">
@@ -20,24 +21,39 @@
         <ul class="list-group">
 
         {% for job in jobs %}
+
           {% if job.ads_type == 0 %}
             <li class="list-group-item list-group-item featured">
-              <p class="title">
+              <div class="title with-thumb">
+                {% if job.company.logo %}
+                  {% thumbnail job.company.logo 80x80 crop as thumb %}
+                  <img class="lazyload" data-original="{{ thumb.url }}" width="60" height="60">
+                {% else %}
+                  <img class="lazyload" data-original="{{ STATIC_URL }}img/placeholder.png" width="60" height="60">
+                {% endif %}
+
                 <a href="{{ job.get_absolute_url }}" title="{{ job.title }}">{{ job.title }}</a>
                 <span class="label label-warning pull-right">{{ job.get_job_type_display|upper }}</span>
-              </p>
-              <p class="company"><i>di</i> {{ job.company }}, {% if job.location %}{{ job.location }}{% else %}{{ job.company.state }}{% endif %}</p>
-              <p class="date">{{ job.started|date:"d M Y" }}</p>
+                <p class="company">{{ job.company }}, {% if job.location %}{{ job.location }}{% else %}{{ job.company.state }}{% endif %}</p>
+                <p class="date">{{ job.started|date:"d M Y" }}</p>
+              </div>
               <p class="description">{{ job.description|truncatewords_html:30|safe }}</p>
             </li>
           {% else %}
             <li class="list-group-item list-group-item">
-              <p class="title">
+              <div class="title with-thumb">
+                {% if job.company.logo %}
+                  {% thumbnail job.company.logo 80x80 crop as thumb %}
+                  <img class="lazyload" data-original="{{ thumb.url }}" width="60" height="60">
+                {% else %}
+                  <img class="lazyload" data-original="{{ STATIC_URL }}img/placeholder.png" width="60" height="60">
+                {% endif %}
+
                 <a href="{{ job.get_absolute_url }}" title="{{ job.title }}">{{ job.title }}</a>
                 <span class="label label-default pull-right">{{ job.get_job_type_display|upper }}</span>
-              </p>
-              <p class="company"><i>di</i> {{ job.company }}, {% if job.location %}{{ job.location }}{% else %}{{ job.company.state }}{% endif %}</p>
-              <p class="date">{{ job.started|date:"d M Y" }}</p>
+                <p class="company">{{ job.company }}, {% if job.location %}{{ job.location }}{% else %}{{ job.company.state }}{% endif %}</p>
+                <p class="date">{{ job.started|date:"d M Y" }}</p>
+              </div>
               <div class="description">{{ job.description|truncatewords_html:30|safe }}</div>
             </li>
           {% endif %}
@@ -53,7 +69,7 @@
         {% for indeed_job in indeed_jobs %}
         <li class="list-group-item indeed">
         <p class="title"><a href="{{ indeed_job.url }}" title="{{ indeed_job.title }}" onmousedown="{{ indeed_job.onmousedown }}" target="_blank">{{ indeed_job.title }}</a></p>
-        <p class="company"><i>di</i> {{ indeed_job.company }}, {{ indeed_job.location }}</p>
+        <p class="company">{{ indeed_job.company }}, {{ indeed_job.location }}</p>
         <p class="date">{{ indeed_job.created|date:"d M Y" }}</p>
         <p class="description">{{ indeed_job.description|truncatewords_html:30|safe }}</p>
         </li>

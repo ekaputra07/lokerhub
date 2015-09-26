@@ -22,9 +22,6 @@
         <div class="list-group-item list-group-item detail">
             <p class="title">
                 {{ job.title }}
-                {% if job.user == user %}
-                <a href="{{ job.get_edit_url }}" class="btn btn-xs btn-info"><span class="glyphicon glyphicon-pencil"></span> Edit</a>
-                {% endif %}
                 <span class="label label-{% if job.ads_type == 0 %}warning{% else %}default{% endif %} pull-right">{{ job.get_job_type_display|upper }}</span>
             </p>
             <p class="company"><i>di</i> {{ job.company }}, {{ job.location }}</p>
@@ -144,13 +141,13 @@
 
         <div class="panel-body">
         {% if job.company.logo %}
-        {% thumbnail job.company.logo 248x124 crop as thumb %}
+        {% thumbnail job.company.logo 248x248 crop as thumb %}
         <div class="company-logo">
-        <img src="{{ thumb.url }}" width="{{ thumb.width }}" height="{{ thumb.height }}" alt="Logo" class="img-responsive">
+        <img class="lazyload" data-original="{{ thumb.url }}" width="{{ thumb.width }}" height="{{ thumb.height }}" class="img-responsive">
         </div>
         {% endif %}
 
-        <span class="glyphicon glyphicon-envelope"></span>&nbsp; {{ job.company.email|nospam }}<br>
+        <!-- <span class="glyphicon glyphicon-envelope"></span>&nbsp; {{ job.company.email|nospam }}<br> -->
         {% if job.company.phone %}<span class="glyphicon glyphicon-phone-alt"></span>&nbsp;  {{ job.company.phone }}<br>{% endif %}
         {% if job.company.website %}<span class="glyphicon glyphicon-globe"></span>&nbsp;  <a href="{{ job.company.website }}" target="_blank">{{ job.company.website }}</a><br>{% endif %}
         <span class="glyphicon glyphicon-map-marker"></span>&nbsp;  {{ job.company.address }}, {% if job.company.website %}{{ job.company.city }},{% endif %} {{ job.company.state }}<br>
