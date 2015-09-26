@@ -22,16 +22,23 @@
         {% for job in jobs %}
           {% if job.ads_type == 0 %}
             <li class="list-group-item list-group-item featured">
-              <span class="pull-right glyphicon glyphicon-star" title="Featured"></span>
-              <p class="title"><a href="{{ job.get_absolute_url }}" title="{{ job.title }}">{{ job.title }}</a></p>
+              <p class="title">
+                <a href="{{ job.get_absolute_url }}" title="{{ job.title }}">{{ job.title }}</a>
+                <span class="label label-warning pull-right">{{ job.get_job_type_display|upper }}</span>
+              </p>
               <p class="company"><i>di</i> {{ job.company }}, {% if job.location %}{{ job.location }}{% else %}{{ job.company.state }}{% endif %}</p>
-              <p class="date">{{ job.started|date:"d M Y" }}<span class="label label-warning pull-right">{{ job.get_job_type_display|upper }}</span></p>
+              <p class="date">{{ job.started|date:"d M Y" }}</p>
+              <p class="description">{{ job.description|truncatewords_html:30|safe }}</p>
             </li>
           {% else %}
             <li class="list-group-item list-group-item">
-              <p class="title"><a href="{{ job.get_absolute_url }}" title="{{ job.title }}">{{ job.title }}</a></p>
+              <p class="title">
+                <a href="{{ job.get_absolute_url }}" title="{{ job.title }}">{{ job.title }}</a>
+                <span class="label label-default pull-right">{{ job.get_job_type_display|upper }}</span>
+              </p>
               <p class="company"><i>di</i> {{ job.company }}, {% if job.location %}{{ job.location }}{% else %}{{ job.company.state }}{% endif %}</p>
-              <p class="date">{{ job.started|date:"d M Y" }}<span class="label label-default pull-right">{{ job.get_job_type_display|upper }}</span></p>
+              <p class="date">{{ job.started|date:"d M Y" }}</p>
+              <div class="description">{{ job.description|truncatewords_html:30|safe }}</div>
             </li>
           {% endif %}
         {% endfor %}
@@ -48,6 +55,7 @@
         <p class="title"><a href="{{ indeed_job.url }}" title="{{ indeed_job.title }}" onmousedown="{{ indeed_job.onmousedown }}" target="_blank">{{ indeed_job.title }}</a></p>
         <p class="company"><i>di</i> {{ indeed_job.company }}, {{ indeed_job.location }}</p>
         <p class="date">{{ indeed_job.created|date:"d M Y" }}</p>
+        <p class="description">{{ indeed_job.description|truncatewords_html:30|safe }}</p>
         </li>
         {% endfor %}
 
