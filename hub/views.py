@@ -442,6 +442,7 @@ def job_detail_view(request, job_slug):
         'title': 'Lowongan %s' % job.title,
         'description': job.description,
         'job': job,
+        'company_jobs': Job.objects.filter(company=job.company, status='ACTIVE', approved=True, ended__gte=now).exclude(id=job.id),
         'linkedin_api_key': settings.LINKEDIN_API_KEY,
         'status': request.GET.get('apply'),
     }
@@ -455,6 +456,21 @@ def job_detail_view(request, job_slug):
         if request.GET.get('apply') == 'yes':
             form = JobApplicationForm()
             context.update({'form': form})
+
+
+        # Get related jobs.
+        related_num = 8
+        related_jobs = job_list = Job.objects.filter(category=job.category,
+                                                     status='ACTIVE',
+                                                     approved=True,
+                                                     ended__gte=now).exclude(id=job.id).order_by('ads_type', '-started')[:related_num]
+        related_jobs_num = related_jobs.count()
+        context['related_jobs'] = related_jobs
+
+        if related_jobs_num < related_num:
+            job_left = related_num - related_jobs_num
+            indeed_jobs = IndeedJob.objects.filter(category=job.category)[:job_left]
+            context['indeed_related_jobs'] = indeed_jobs
     else:
         form = JobApplicationForm(request.POST, request.FILES)
         if form.is_valid():
@@ -464,6 +480,8 @@ def job_detail_view(request, job_slug):
             appl.save()
             messages.success(request, 'Selamat! Lowongan anda sudah terkirim.', extra_tags='success')
             return HttpResponseRedirect(job.get_absolute_url())
+        else:
+            context['form'] = form
 
     return render_to_response('jobs-single.html', context,
                               context_instance=RequestContext(request))
