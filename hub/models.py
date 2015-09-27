@@ -117,7 +117,7 @@ class Job(models.Model):
     # Ads type, 0 Premium, 1 Free
     ads_type = models.SmallIntegerField(default=1)
 
-    company = models.ForeignKey(Company, verbose_name='Perusahaan')
+    company = models.ForeignKey(Company, verbose_name='Perusahaan', related_name='jobs')
     title = models.CharField('Nama pekerjaan', max_length=150, default='')
     job_type = models.CharField('Status karyawan', max_length=15, choices=JOB_TYPES, default='FULLTIME')
     category = models.ForeignKey(Category, verbose_name='Kategori')

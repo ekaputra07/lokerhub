@@ -60,6 +60,12 @@ class CompanyForm(forms.ModelForm):
         exclude = ('user',)
 
 
+class TransferCompanyForm(forms.ModelForm):
+    class Meta:
+        model = Company
+        fields = ('user',)
+
+
 class JobForm(forms.ModelForm):
     class Meta:
         model = Job

@@ -1,4 +1,5 @@
 {% extends 'dashboard.html' %}
+{% load hub_tags %}
 
 {% block headscripts %}{% endblock %}
 {% block title %}
@@ -24,7 +25,6 @@ Tambah Perusahaan
 <hr>
 <form role="form" action="" method="post" enctype="multipart/form-data">
   {% csrf_token %}
-  {% load hub_tags %}
   <div class="row">
     <div class="col-sm-6">
       <div class="form-group">
@@ -79,9 +79,20 @@ Tambah Perusahaan
     {{ form.description|addclass:"form-control"}}
     {% if form.description.errors %}<span class="label label-danger">{{ form.description.errors.0 }}</span>{% endif %}
   </div>
-
-
   <button type="submit" class="pull-right btn btn-lg btn-success">Simpan Perusahaan</button>
   <div class="clearfix"></div>
 </form>
+
+{% if company and user.is_superuser %}
+<br>
+<div class="well well-sm">
+  <form role="form" action="{% url 'company_transfer' company_id=company.id %}" method="post" class="form-inline">
+      {% csrf_token %}
+      <label for="id_{{ transfer_form.user.name }}">Transfer to user:</label>
+      {{ transfer_form.user|addclass:"form-control"}}
+      {% if transfer_form.user.errors %}<span class="label label-danger">{{ transfer_form.user.errors.0 }}</span>{% endif %}
+      <button type="submit" class="btn btn-danger">Transfer</button>
+  </form>
+</div>
+{% endif %}
 {% endblock %}

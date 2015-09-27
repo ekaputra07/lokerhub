@@ -21,7 +21,7 @@ from django.utils.timezone import now
 from django.contrib import messages
 
 from hub.models import OneallToken, Company, Category, Job, IndeedJob, PremiumOrder
-from hub.forms import CompanyForm, JobForm, JobApplicationForm, PaymentConfirmationForm, ProfileForm, EmailForm
+from hub.forms import CompanyForm, TransferCompanyForm, JobForm, JobApplicationForm, PaymentConfirmationForm, ProfileForm, EmailForm
 from hub.utils import convert_gtm_to_utc, send_premium_activation_email, send_free_activation_email, tweet_job
 
 
@@ -284,6 +284,7 @@ def company_edit_view(request, company_id):
     context = {
         'active_page': 'companies',
         'company': company,
+        'transfer_form': TransferCompanyForm(instance=company)
     }
 
     if request.method == 'GET':
@@ -313,6 +314,29 @@ def company_delete_view(request, company_id):
     messages.success(request, 'Satu perusahaan telah di dihapus.', extra_tags='success')
     return HttpResponseRedirect(reverse('companies'))
 
+
+@login_required
+def company_transfer_view(request, company_id):
+    """
+    Transfer company owner.
+    """
+    user = request.user
+    company = get_object_or_404(Company, user=user, pk=company_id)
+    form  = TransferCompanyForm(request.POST, instance=company)
+    if form.is_valid():
+        c = form.save(commit=False)
+
+        # To make sure transfer can only be done by superuser.
+        if not user.is_superuser:
+            c.user = user
+        else:
+            # Transfer all jobs under the company to the new owner.
+            Job.objects.filter(company=company).update(user=form.cleaned_data['user'])
+        c.save()
+        messages.success(request, 'Perusahaan berhasil ditransfer.', extra_tags='success')
+    else:
+        messages.error(request, 'Perusahaan gagal ditransfer.', extra_tags='warning')
+    return HttpResponseRedirect(reverse('dashboard'))
 
 # ------------------------------- Jobs ----------------------------------------#
 
@@ -395,7 +419,7 @@ def job_edit_view(request, job_id):
     job = get_object_or_404(Job, user=user, pk=job_id)
     context = {
         'active_page': 'dashboard',
-        'job': job,
+        'job': job
     }
 
     if request.method == 'GET':

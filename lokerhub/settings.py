@@ -114,11 +114,11 @@ CELERYBEAT_SCHEDULE = {
         'task': 'hub.tasks.task_periodic_check_jobtime',
         'schedule': timedelta(seconds=3600), #run every hour
     },
-    'tweet-todays-job': {
-        'task': 'hub.tasks.task_tweet_todays_job',
-        # 'schedule': timedelta(seconds=10),
-        'schedule': crontab(minute=0, hour='19'), #run on 7am in the morning
-    },
+    # 'tweet-todays-job': {
+    #     'task': 'hub.tasks.task_tweet_todays_job',
+    #     # 'schedule': timedelta(seconds=10),
+    #     'schedule': crontab(minute=0, hour='19'), #run on 7am in the morning
+    # },
 }
 
 # Site Domain
