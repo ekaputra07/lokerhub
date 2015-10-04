@@ -1,0 +1,30 @@
+{% extends 'pages/base.html' %}
+
+{% block page_title %}
+Lowongan di promosikan via Facebook
+{% endblock %}
+
+{% block page_intro %}
+Upgrade lowongan anda ke Premium hanya dengan Rp. 120,000,- (aktif selama 30 hari) dan kami akan mengalokasikan Rp. 50,000,- untuk mengiklankan lowongan anda di Facebook.
+{% endblock %}
+
+
+{% block page_content %}
+    <div class="img-container"><img src="{{ STATIC_URL }}img/fbads.png" class="img-responsive"></div>
+    <h3 class="cover-heading">Kenapa lowongan juga harus dipromosikan di Facebook?</h3>
+    <hr>
+    <p class="lead"><strong>Facebook merupakan salah satu website paling populer di Internet</strong><br>Dengan hampir 1.28 milyar pengguna aktif per bulan, Facebook merupakan website nomer 2 yang paling banyak dikunjungi setelah Google. Maka bisa dipastikan lowongan anda bisa dilihat oleh begitu banyak pengguna Facebook.
+    </p>
+
+    <p class="lead"><strong>Facebook menawarkan sistem promosi yang tertarget</strong><br>Tidak hanya membuatkan iklan lowongan di Facebook, kami juga menentukan target lowongan yang ingin dicapai berdasarkan lokasi pekerjaan dan bidang pekerjaan yang ada di lowongan yang anda buat. Hal ini untuk menjamin iklan sampai kepada pengguna Facebook yang tepat.</p>
+
+    <p class="lead"><strong>Lowongan juga menjangkau pengguna perangkat mobile</strong><br>Salah satu alasan kenapa kami memilih Facebook untuk mempromosikan lowongan anda adalah karena secara otomatis iklan lowongan anda akan dilihat pengguna Facebook yang mengakses melalui perangkat mobile.</p>
+
+    <p class="lead"><strong>Sit back and relax!</strong><br>Semua proses pembuatan iklan lowongan ini termasuk pembayaran ke Facebook seluruhnya dilakukkan oleh kami. Anda tidak perlu melakukkan langkah apapun selain melakukkan upgrade lowongan anda ke Premium.</p>
+    <hr>
+
+    {% if not user.is_authenticated %}
+    <p class="lead"><a href="{% url 'login' %}" class="btn btn-lg btn-warning">Daftar Sekarang. Gratis!</a></p>
+    {% endif %}
+
+{% endblock %}

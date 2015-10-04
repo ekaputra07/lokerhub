@@ -828,6 +828,17 @@ def page_contact(request):
     return render_to_response('pages/contact.html', context, context_instance=RequestContext(request))
 
 
+def page_fb_promo(request):
+    """
+    fb promo page.
+    """
+    context={
+        'title': 'Promosi via iklan Facebook',
+        'description': 'Upgrade iklan ke Premium dan kami akan mengalokasikan Rp. 50,000,- untuk mengiklankan lowongan anda ke Facebook.',
+    }
+    return render_to_response('pages/fb-promo.html', context, context_instance=RequestContext(request))
+
+
 def robots_txt(request):
     """
     Robots.txt

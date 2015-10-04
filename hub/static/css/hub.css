@@ -188,6 +188,13 @@ body{
   padding: 3px 0 10px;
   margin: 0;
 }
+
+.sidebar .ad-block{
+  margin-bottom: 15px;
+}
+.sidebar .ad-block img{
+  border-radius: 5px;
+}
 /* Dashboard */
 .container.dashboard-menu{
   text-align: center;
