@@ -150,7 +150,7 @@
         <!-- <span class="glyphicon glyphicon-envelope"></span>&nbsp; {{ job.company.email|nospam }}<br> -->
         {% if job.company.phone %}<span class="glyphicon glyphicon-phone-alt"></span>&nbsp;  {{ job.company.phone }}<br>{% endif %}
         {% if job.company.website %}<span class="glyphicon glyphicon-globe"></span>&nbsp;  <a href="{{ job.company.website }}" target="_blank">{{ job.company.website }}</a><br>{% endif %}
-        <span class="glyphicon glyphicon-map-marker"></span>&nbsp;  {{ job.company.address }}, {% if job.company.website %}{{ job.company.city }},{% endif %} {{ job.company.state }}<br>
+        <span class="glyphicon glyphicon-map-marker"></span>&nbsp;  {{ job.company.address }}, {% if job.company.city %}{{ job.company.city }},{% endif %} {{ job.company.state }}<br>
         <br>{{ job.company.description }}
 
         <br><br>
