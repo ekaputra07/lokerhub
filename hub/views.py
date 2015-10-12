@@ -369,7 +369,7 @@ def jobs_view(request, category_slug):
         jobs = []
 
     context = {
-        'title': 'Kategori %s' % category.name,
+        'title': 'Lowongan %s' % category.name,
         'description': category.description,
         'active_page': 'jobs',
         'categories': Category.objects.all(),
@@ -833,8 +833,8 @@ def page_fb_promo(request):
     fb promo page.
     """
     context={
-        'title': 'Promosi via iklan Facebook',
-        'description': 'Upgrade iklan ke Premium dan kami akan mengalokasikan Rp. 50,000,- untuk mengiklankan lowongan anda ke Facebook.',
+        'title': 'Promosi lowongan via iklan Facebook',
+        'description': 'Upgrade lowongan ke Premium dan kami akan mengalokasikan Rp. 50,000,- untuk mengiklankan lowongan anda ke Facebook.',
     }
     return render_to_response('pages/fb-promo.html', context, context_instance=RequestContext(request))
 
