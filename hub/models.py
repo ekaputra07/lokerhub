@@ -98,6 +98,7 @@ JOB_TYPES = (
     ('PARTTIME', 'Part Time'),
     ('FREELANCE', 'Freelance'),
     ('INTERN', 'Magang'),
+    ('CONTRACT', 'Kontrak'),
 )
 
 JOB_STATUSES = (
