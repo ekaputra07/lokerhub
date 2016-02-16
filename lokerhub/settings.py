@@ -34,6 +34,8 @@ ADMINS = (
 
 MANAGERS = ADMINS
 
+SITE_ID = 1
+
 
 # Application definition
 
@@ -45,6 +47,8 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.humanize',
+    'django.contrib.sitemaps',
+    'django.contrib.sites',
     'hub',
     'djcelery',
     'kombu.transport.django',
