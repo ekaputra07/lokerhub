@@ -40,6 +40,14 @@ body{
   margin-bottom: 10px;
 }
 
+.container.heading h1.cover-heading{
+  font-size: 2em;
+}
+
+.container.heading h2.lead{
+  font-size: 1.3em;
+}
+
 .container.listing .cover-heading{
   font-weight: 400;
 }
