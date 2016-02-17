@@ -6,5 +6,7 @@ Lowongan {{ category.name }}
 {% endblock %}
 
 {% block section_description %}
-{{ category.meta_desc }}
+{{ category.description }}
 {% endblock %}
+
+{% block meta_desc %}{{ category.meta_desc }}{% endblock %}
