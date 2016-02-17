@@ -24,11 +24,22 @@
                 {{ job.title }}
                 <span class="label label-{% if job.ads_type == 0 %}warning{% else %}default{% endif %} pull-right">{{ job.get_job_type_display|upper }}</span>
             </p>
-            <p class="company"><i>di</i> {{ job.company }}, {{ job.location }}</p>
-            <p class="date">{{ job.started|date }}</p>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <p class="company"><i>di</i> {{ job.company }}, {{ job.location }}</p>
+                    <p class="date">{{ job.started|date }}</p>
+                </div>
+
+                <div class="col-md-6" style="text-align:center">
+                    <p>Pendidikan minimum: <strong>{{ job.get_education_display }}</strong></p>
+                    <p>Kisaran gaji: <strong>{{ job.get_salary_range_display }}</strong></p>
+                </div>
+            </div>
             <hr>
 
             <div class="detail">
+
             {{ job.description|safe }}
             <div class="clearfix"></div>
             {% if job.how_to_apply %}

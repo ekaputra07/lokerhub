@@ -51,9 +51,10 @@ def home_view(request):
     except EmptyPage:
         jobs = []
 
+    year = datetime.datetime.now().year
     context = {
-        'title': 'Lowongan kerja IT Indonesia',
-        'description': 'LokerHub adalah situs penyedia informasi karir di bidang Teknologi Informasi.',
+        'title': 'Lowongan kerja IT Indonesia %s' % year,
+        'description': 'LokerHub adalah situs penyedia informasi karir di bidang Teknologi Informasi Indonesia %s.' % year,
         'categories': Category.objects.all(),
         'jobs': jobs,
         'indeed_jobs': indeed_jobs,
@@ -369,7 +370,7 @@ def jobs_view(request, category_slug):
         jobs = []
 
     context = {
-        'title': 'Lowongan %s' % category.name,
+        'title': 'Lowongan %s Indonesia %s' % (category.name, datetime.datetime.now().year),
         'description': category.description,
         'active_page': 'jobs',
         'categories': Category.objects.all(),

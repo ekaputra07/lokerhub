@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id-ID" prefix="og: http://ogp.me/ns#">
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -7,6 +7,7 @@
     <meta name="description" content="{% block description %}{{ title|removetags:"p a b h1 h2 h3 ul ol li" }}. {{ description|removetags:"p a b h1 h2 h3 ul ol li"|striptags|truncatewords:20 }}{% endblock %}">
     <meta name="author" content="LokerHub.com">
     <link rel="shortcut icon" href="{{ STATIC_URL }}img/favicon.png">
+    <link rel="canonical" href="{{ CURRENT_URL }}" />
 
     <title>{% block title %}{{ title }}{% endblock %} | LokerHub.com</title>
     <meta name="google-site-verification" content="7gl6ks92GVdwngDeAL78BVoZjsylBoKF8I-A2jQ9O4k" />

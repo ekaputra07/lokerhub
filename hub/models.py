@@ -72,6 +72,8 @@ class Category(models.Model):
     description = models.TextField()
     indeed_query = models.CharField(max_length=50, null=True, blank=True)
     order = models.IntegerField(blank=True, null=True, default=0)
+    meta_keys = models.CharField(max_length=250, null=True, blank=True)
+    meta_desc = models.CharField(max_length=160, null=True, blank=True)
 
     class Meta:
         db_table = 'categories'
@@ -107,6 +109,22 @@ JOB_STATUSES = (
     ('INACTIVE', 'Inactive'),
 )
 
+JOB_SALARY = (
+    ('1J3', 'Rp. 1.000.000 - Rp. 3.000.000'),
+    ('3J5', 'RP. 3.000.000 - Rp. 5.000.000'),
+    ('5J10', 'Rp. 5.000.000 - Rp. 10.000.000'),
+    ('j10', 'Diatas Rp. 10.000.000'),
+    ('NEGO', 'Negosiasi'),
+)
+
+EDUCATIONS = (
+    (1, 'Semua jenjang'),
+    (2, 'SMP/sederajat'),
+    (3, 'SMA/SMK/sederajat'),
+    (4, 'Diploma D1/D2/D3'),
+    (4, 'Sarjana/S1'),
+)
+
 class Job(models.Model):
     """
     The job.
@@ -123,8 +141,13 @@ class Job(models.Model):
     job_type = models.CharField('Status karyawan', max_length=15, choices=JOB_TYPES, default='FULLTIME')
     category = models.ForeignKey(Category, verbose_name='Kategori')
     location = models.CharField('Lokasi kerja', max_length=150, blank=True, null=True, default='')
-    description = models.TextField('Deskripsi pekerjaan', default='')
+    description = models.TextField('Deskripsi pekerjaan (tentang pekerjaan, syarat/kualifikasi dll)', default='')
     how_to_apply = models.TextField('Cara melamar', blank=True, null=True, default='')
+    salary_range = models.CharField('Kisaran gaji', max_length=5, choices=JOB_SALARY, default='1J3')
+    education = models.SmallIntegerField('Pendidikan minimal', choices=EDUCATIONS, default=1)
+
+    meta_keys = models.CharField(max_length=250, null=True, blank=True)
+    meta_desc = models.CharField(max_length=160, null=True, blank=True)
 
     created = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)

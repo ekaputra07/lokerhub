@@ -51,7 +51,7 @@
         {% if form.title.errors %}<span class="label label-danger">{{ form.title.errors.0 }}</span>{% endif %}
       </div>
       <div class="form-group">
-        <label for="id_{{ form.job_type.name }}">{{ form.job_type.label }}</label>
+        <label for="id_{{ form.job_type.name }}">{{ form.job_type.label }} *</label>
         {{ form.job_type|addclass:"form-control"}}
         {% if form.job_type.errors %}<span class="label label-danger">{{ form.job_type.errors.0 }}</span>{% endif %}
       </div>
@@ -60,6 +60,12 @@
         <label for="id_{{ form.location.name }}">{{ form.location.label }}</label>
         {{ form.location|addclass:"form-control"}}
         {% if form.location.errors %}<span class="label label-danger">{{ form.location.errors.0 }}</span>{% endif %}
+      </div>
+
+      <div class="form-group">
+        <label for="id_{{ form.education.name }}">{{ form.education.label }} *</label>
+        {{ form.education|addclass:"form-control"}}
+        {% if form.education.errors %}<span class="label label-danger">{{ form.education.errors.0 }}</span>{% endif %}
       </div>
     </div>
 
@@ -88,18 +94,24 @@
           {{ form.category|addclass:"form-control"}}
           {% if form.category.errors %}<span class="label label-danger">{{ form.category.errors.0 }}</span>{% endif %}
         </div>
+
+      <div class="form-group">
+        <label for="id_{{ form.salary_range.name }}">{{ form.salary_range.label }} *</label>
+        {{ form.salary_range|addclass:"form-control"}}
+        {% if form.salary_range.errors %}<span class="label label-danger">{{ form.salary_range.errors.0 }}</span>{% endif %}
+      </div>
     </div>
 
   </div>
 
   <div class="form-group">
-    <label for="id_{{ form.description.name }}">{{ form.description.label }} *</label>
+    <label for="id_{{ form.description.name }}">{{ form.description.label }}: *</label>
     {{ form.description|addclass:"form-control"}}
     {% if form.description.errors %}<span class="label label-danger">{{ form.description.errors.0 }}</span>{% endif %}
   </div>
 
   <div class="form-group">
-    <label for="id_{{ form.how_to_apply.name }}">{{ form.how_to_apply.label }}</label>
+    <label for="id_{{ form.how_to_apply.name }}">{{ form.how_to_apply.label }}:</label>
     {{ form.how_to_apply|addclass:"form-control"}}
     {% if form.how_to_apply.errors %}<span class="label label-danger">{{ form.how_to_apply.errors.0 }}</span>{% endif %}
   </div>
